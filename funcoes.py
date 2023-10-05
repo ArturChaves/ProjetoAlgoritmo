@@ -6,7 +6,7 @@ def novo_cliente():
     senha_usuario = input("Digite sua senha: ")
     print("Razão social:", razao_social)
     print("CNPJ:", cnpj)
-    print("Tipo da conta:", tipo_conta)
+    print("Tipo da conta: ",tipo_conta)
     print("Valor inicial:", valor_inicial)
     print("Senha:", senha_usuario)
 
