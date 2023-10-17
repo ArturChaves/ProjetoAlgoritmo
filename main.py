@@ -1,5 +1,7 @@
 from funcoes import *
 
+login()
+
 while(True):
     operacao = input("""
     1. Novo cliente 

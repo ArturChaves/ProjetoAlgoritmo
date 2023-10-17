@@ -1,6 +1,5 @@
 from users import *
 
-
 def validar(cnpj):
     tentativa = 0
     chaves = users.keys()
@@ -14,8 +13,27 @@ def validar(cnpj):
             if senha in users[cnpj]: # Caso a senha seja correta o usuario é deletado com sucesso  
                 return True
         else:
-            print("Usuario não cadastrado")
             return False
+
+def login():
+    while(True):
+        login = input("""
+    1. Login
+    2. Registrar
+
+    Escolha a operação desejada: """)
+    
+        if login == '1':
+            cnpj = int(input("Digite o seu CNPJ: "))
+            if validar(cnpj) == True:
+                break
+            else:
+                print("Usuário não cadastrado, tente novamente.")
+            
+        if login == '2':
+            novo_cliente()
+            break
+            
 
 
 def novo_cliente():
@@ -66,6 +84,8 @@ def apaga_cliente():
     cnpj = int(input("Digite o seu CNPJ: "))
     if validar(cnpj) == True:
         del users[cnpj]
+    else:
+        print("Usuario não cadastrado")
 
 def debito():
     cnpj = input("Digite o seu CNPJ: ")
@@ -93,7 +113,8 @@ def listar_clientes():
             print("Portador do cnpj: ", chave)
             for valores in users[cnpj]:
                 print(valores)
-            
+    else:
+        print("Usuario não cadastrado")
 
 def operacao_livre():
     print("Essa função será decidida no futuro")
