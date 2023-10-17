@@ -1,4 +1,23 @@
 from users import *
+
+
+def validar(cnpj):
+    tentativa = 0
+    chaves = users.keys()
+    while(True):
+        if cnpj in chaves: # Caso o cnpj seja correto a próxima validação é a senha            
+            senha = input("Digite sua senha: ")
+            tentativa += 1
+            if tentativa == 3:
+                print("Reinicie o programa e tente novamente.")
+                break
+            if senha in users[cnpj]: # Caso a senha seja correta o usuario é deletado com sucesso  
+                return True
+        else:
+            print("Usuario não cadastrado")
+            return False
+
+
 def novo_cliente():
     valores = [] #cria uma lista com os valores da chave do user
     
@@ -44,21 +63,9 @@ def novo_cliente():
         print("Usuário ja cadastrado") # com o valor da tupla, o programa verifica se o usuario ainda nao existe no sistema, caso se confirme, um novo user é criado
 
 def apaga_cliente():
-    chaves = users.keys()
-    cnpj = int(input("Digite o seu CNPJ: ")) # O programa pergunta o cnpj para conferir se o cnpj é realmente uma chave valida em users
-    while(True):
-        if cnpj in chaves: # Caso o cnpj seja correto a próxima validação é a senha 
-            senha = input("Digite sua senha: ")
-            if senha in users[cnpj]: # Caso a senha seja correta o usuario é deletado com sucesso                          
-                del users[cnpj]
-                print("Usuário deletado com sucesso!")
-                break
-            else: # Caso a senha não seja correta o programa detecta e termina a operação avisando que o usuario ou senha são invalidos.
-                print("Usuario ou senha invalidos")
-                break
-        else:
-            print('Usuario não casdastrado') # Caso o usuario não esteja cadastrado, o programa identifica e retorna usuario não cadastrado, terminando a operação.
-            break
+    cnpj = int(input("Digite o seu CNPJ: "))
+    if validar(cnpj) == True:
+        del users[cnpj]
 
 def debito():
     cnpj = input("Digite o seu CNPJ: ")
@@ -80,7 +87,13 @@ def extrato():
     print("Aqui será mostrado o extrato do cliente")
 
 def listar_clientes():
-    print("Aqui serão mostradas as informações dos clientes")
+    cnpj = int(input("Digite o seu CNPJ: "))
+    if validar(cnpj) == True:
+        for chave, valores in users.items():
+            print("Portador do cnpj: ", chave)
+            for valores in users[cnpj]:
+                print(valores)
+            
 
 def operacao_livre():
     print("Essa função será decidida no futuro")
