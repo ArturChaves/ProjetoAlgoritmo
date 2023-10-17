@@ -49,11 +49,9 @@ def apaga_cliente():
     while(True):
         if cnpj in chaves: # Caso o cnpj seja correto a próxima validação é a senha 
             senha = input("Digite sua senha: ")
-            if senha in users[cnpj]: # Caso a senha seja correta o usuario é deletado com sucesso
-                print(users)                           
+            if senha in users[cnpj]: # Caso a senha seja correta o usuario é deletado com sucesso                          
                 del users[cnpj]
                 print("Usuário deletado com sucesso!")
-                print(users)
                 break
             else: # Caso a senha não seja correta o programa detecta e termina a operação avisando que o usuario ou senha são invalidos.
                 print("Usuario ou senha invalidos")
