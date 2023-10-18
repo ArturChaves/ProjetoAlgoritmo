@@ -10,7 +10,7 @@ def validar(cnpj):
             if tentativa == 3:
                 print("Reinicie o programa e tente novamente.")
                 break
-            if senha in users[cnpj]: # Caso a senha seja correta o usuario é deletado com sucesso  
+            if senha in users[cnpj]:  # O programa valida se a senha é compátivel com o cnpj e permite o acesso ao usuário
                 return True
         else:
             return False
@@ -76,58 +76,83 @@ def novo_cliente():
         valores = valores
         users[cnpj] = valores
         print("User cadastrado com sucesso, muito obrigado por fazer parte do nosso banco!")
+        print(users)
         return users
     else:
         print("Usuário ja cadastrado") # com o valor da tupla, o programa verifica se o usuario ainda nao existe no sistema, caso se confirme, um novo user é criado
 
 def apaga_cliente():
     cnpj = int(input("Digite o seu CNPJ: "))
-    if validar(cnpj) == True:
+    if validar(cnpj) == True:  # O programa valida cnpj e a senha, caso estejam corretos, a conta será deletada
         del users[cnpj]
     else:
         print("Usuario não cadastrado")
 
+def listar_clientes():
+    cnpj = int(input("Digite o seu CNPJ: "))    
+    if validar(cnpj) == True:      
+        for chave in users.keys():
+            print("")       # O programa busca no dicionário os respectivos valores e mostra ao cliente
+            print("Portador do cnpj: ", chave)
+            print("Razão social: ", users[chave][1])
+            print("Valor: ", users[chave][2])
+            print("Senha: R$ ", users[chave][3])
+            print("")
+    else:
+        print("Usuario não cadastrado")
+
 def debito():
-    cnpj = input("Digite o seu CNPJ: ")
-    senha = input("Digite sua senha: ")
-    valor = float(input("Digite o valor que será debitado: "))
-    print(cnpj)
-    print(senha)
-    print(valor)
+    cnpj = int(input("Digite o seu CNPJ: "))
+    if validar(cnpj) == True:
+        while(True):
+            try:
+                valor = float(input("Digite o valor que será debitado: "))  # Pede ao usuário o valor que será debitado
+                break
+            except ValueError:      
+                print("Tipo de saldo inválido, tente novamente apenas com números.")    # Caso o valor esteja digitado incorretamente, o programa retorna para o usuário o erro e pede para que ele coloque novamente
+        for chave in users.keys():
+            if chave == cnpj:
+                users[cnpj][2] -= valor     # O programa debita da conta do usuário e retorna ao programa o valor já ajustado
+                return users
+    else:
+        print("Usuário inválido, tente novamente")
+        
 
 def deposito():
-    cnpj = input("Digite o seu CNPJ: ")
-    valor = float(input("Digite o valor que será debitado: "))
-    print(cnpj)
-    print(valor)
+    cnpj = int(input("Digite o seu CNPJ: "))
+    if validar(cnpj) == True:
+        while(True):
+            try:
+                valor = float(input("Digite o valor que será depositado: "))    # assim como na função debito(), é requisitado do usuário o valor a ser depositado
+                break
+            except ValueError:
+                print("Tipo de saldo inválido, tente novamente apenas com números.")
+        for chave in users.keys():
+            if chave == cnpj:
+                users[cnpj][2] += valor # O programa deposita na conta do usuário e retorna ao programa o valor já ajustado
+                print(users)
+                return users
+    else:
+        print("Usuário inválido, tente novamente")
 
+def transferencia_entre_contas():
+    cnpj = int(input("Digite o seu CNPJ: "))
+    if validar(cnpj) == True:   # O programa valida o cnpj e a senha do usuário, e caso estejam corretos, permitem continuar a função
+        destino = int(input("Digite o cnpj do destinatário: "))
+        valor = float(input("Digite o valor da transfêrencia: "))
+        users[cnpj][2] -= valor     # O valor é debitado da conta do remetente e adicionado à conta do destinatário
+        users[destino][2] += valor
+        print(users)
+        return users
 def extrato():
     cnpj = input("Digite o seu CNPJ: ")
     senha = input("Digite sua senha: ")
     print("Aqui será mostrado o extrato do cliente")
 
-def listar_clientes():
-    cnpj = int(input("Digite o seu CNPJ: "))
-    if validar(cnpj) == True:
-        for chave, valores in users.items():
-            print("Portador do cnpj: ", chave)
-            for valores in users[cnpj]:
-                print(valores)
-    else:
-        print("Usuario não cadastrado")
-
 def operacao_livre():
     print("Essa função será decidida no futuro")
 
-def transferencia_entre_contas():
-    cnpj = input("Digite o seu CNPJ: ")
-    senha = input("Digite sua senha: ")
-    cnpj_destino = input("Digite o CNPJ de destino: ")
-    valor = float(input("Digite o valor: "))
-    print(cnpj)
-    print(senha)
-    print(cnpj_destino)
-    print(valor)
+
 
 
 
