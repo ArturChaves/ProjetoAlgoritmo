@@ -1,0 +1,12 @@
+Pessoa: pessoa1
+nome: Alice
+idade: 30
+
+Pessoa: pessoa2
+nome: Bob
+idade: 25
+
+Pessoa: pessoa3
+nome: Charlie
+idade: 35
+
