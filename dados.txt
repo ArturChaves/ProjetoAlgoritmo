@@ -1,12 +1,14 @@
-Pessoa: pessoa1
+pessoa: pessoa1
+cnpj: 123
 nome: Alice
 idade: 30
 
-Pessoa: pessoa2
+pessoa: pessoa2
+cnpj: 321
 nome: Bob
 idade: 25
 
-Pessoa: pessoa3
+pessoa: pessoa3
 nome: Charlie
 idade: 35
 
