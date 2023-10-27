@@ -1,0 +1,5 @@
+{
+    "123": {
+        "razao_social": "abc", "saldo": 1000.0, "tipo_conta": "comum", "senha": "123456"
+        }
+    }
