@@ -1,4 +1,5 @@
 from users import *
+import json
 
 def validar(cnpj):
     tentativa = 0
@@ -37,49 +38,59 @@ def login():
 
 
 def novo_cliente():
-    valores = [] #cria uma lista com os valores da chave do user
-    
-    razao_social = input("Informe sua razão social: ")
-    valores.append(razao_social) #adiciona a razao social à lista "valores"
-    
-    tipo_conta = input("Qual o seu tipo de conta? (comum/plus): ").lower()
-    while tipo_conta != "comum" and tipo_conta != "plus":
-        tipo_conta = input("Por favor insira uma opção correta do seu tipo de conta: ")
-    valores.append(tipo_conta)  #verifica o tipo da conta do usuario, e depois adiciona à lista "valores"
-    
+    with open("dados.json", "r") as arquivo_json:
+        dados = json.load(arquivo_json)
+
+
     while(True):
-        try:
-            valor_inicial = float(input("Informe o saldo inicial de sua conta: "))
-            break
-        except ValueError:
-            print("Valor inválido")
-    valores.append(valor_inicial) # pede ao usuario um input com o valor inicial de sua conta, caso o valor seja inválido, o except constata o erro e mostra ao user
-        
-    while(True):
-        try:
-            cnpj = int(input("Informe SOMENTE os números do seu cnpj: "))
-            break
-        except ValueError:
-            print("Seu cnpj é inválido, tente inserir novamente apenas com os números: ") # pede ao usuário o cnpj, caso o valor seja invalido, o except constata o erro e o mostra ao user
-    
-    senha = input("Crie uma senha com pelo menos 6 dígitos: ")
-    
-    while(True):
-        if len(senha) < 6:
-            senha = input("Crie uma senha com pelo menos 6 dígitos: ")
+        cnpj = int(input("CNPJ: "))
+        cnpj = str(cnpj)
+        validacao_cnpj = True
+        if len(cnpj) == 3:
+            for contas in dados.keys():
+                if cnpj in contas:
+                    validacao_cnpj = False
+                else:
+                    break
+            if validacao_cnpj == False:
+                print("Valor inválido, tente novamente!")
+            else:
+                break
         else:
-            break # pede a senha ao usuario com no minimo 6 digitos, caso seja menor, o programa faz ele responder de novo, ate informar uma senha válida
+            print("Valor inválido, tente novamente!")
+        
+    
+        
 
-    valores.append(senha)
+    razao_social = input("Razão social: ")
 
-    if cnpj not in users:
-        valores = valores
-        users[cnpj] = valores
-        print("User cadastrado com sucesso, muito obrigado por fazer parte do nosso banco!")
-        print(users)
-        return users
-    else:
-        print("Usuário ja cadastrado") # com o valor da tupla, o programa verifica se o usuario ainda nao existe no sistema, caso se confirme, um novo user é criado
+    while(True):
+        try:
+            saldo = float(input("Informe o saldo inicial de sua conta: "))
+            break
+        except ValueError:
+            print("Valor inválido, tente novamente!")
+
+    tipo_conta = input("tipo da conta(comum/plus): ").capitalize()
+    while tipo_conta != "Comum" and tipo_conta != "Plus":
+        tipo_conta = input("Por favor insira uma opção correta do seu tipo de conta: ")
+
+    senha = input("senha: ")
+    while(True):
+            if len(senha) < 6:
+                senha = input("Crie uma senha com pelo menos 6 dígitos: ")
+            else:
+                break
+
+    dados[cnpj] = {
+            "razao_social": razao_social,
+            "saldo" : saldo,
+            "tipo_conta" : tipo_conta,
+            "senha" : senha
+        }
+        
+    with open("dados.json", "w") as arquivo_json:
+        json.dump(dados, arquivo_json, indent=4)
 
 def apaga_cliente():
     cnpj = int(input("Digite o seu CNPJ: "))

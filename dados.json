@@ -22,5 +22,29 @@
         "saldo": 300.0,
         "tipo_conta": "comum",
         "senha": "abc123"
+    },
+    "12345678901234": {
+        "razao_social": "exato",
+        "saldo": 120.0,
+        "tipo_conta": "Plus",
+        "senha": "abc123"
+    },
+    "321": {
+        "razao_social": "artur",
+        "saldo": 1200.0,
+        "tipo_conta": "Plus",
+        "senha": "abc1234"
+    },
+    "543": {
+        "razao_social": "felipe",
+        "saldo": 1200.0,
+        "tipo_conta": "Comum",
+        "senha": "1234abcde"
+    },
+    "987": {
+        "razao_social": "gabriel",
+        "saldo": 899.0,
+        "tipo_conta": "Comum",
+        "senha": "abcdef"
     }
 }
