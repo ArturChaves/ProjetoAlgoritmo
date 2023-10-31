@@ -4,6 +4,7 @@ login()
 
 while(True):
     operacao = input("""
+    ===================================================
     1. Novo cliente 
     2. Apaga cliente
     3. Listar clientes
@@ -14,7 +15,9 @@ while(True):
     8. Operação a definir
     9. Sair
                      
-    Escolha um tipo de operação: """)
+    Escolha um tipo de operação:
+    ===================================================
+    """)
     
     if operacao == "1":
         novo_cliente()

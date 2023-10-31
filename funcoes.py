@@ -1,3 +1,4 @@
+import datetime
 import json
 
 def validar(cnpj):
@@ -20,10 +21,15 @@ def validar(cnpj):
 def login():
     while(True):
         login = input("""
+===================================================
+        Bem vindo ao Banco QuemPoupaTem PJ
+===================================================
     1. Login
     2. Registrar
 
-    Escolha a operação desejada: """)
+    Escolha a operação desejada:
+===================================================
+ """)
     
         if login == '1':
             cnpj = int(input("Digite o seu CNPJ: "))
@@ -88,7 +94,7 @@ def novo_cliente():
             "saldo" : saldo,
             "tipo_conta" : tipo_conta,
             "senha" : senha,
-            "transacoes": {}
+            "transacoes": []
         }
         
     with open("dados.json", "w") as arquivo_json:
@@ -113,65 +119,90 @@ def apaga_cliente():
 def listar_clientes():
     with open("dados.json", "r") as arquivo_json:
         dados = json.load(arquivo_json)
+    print("="*40)
     print("Clientes:")
     print()
     for cnpj, users in dados.items():
+        print("="*40)
         print("Razão social:", users["razao_social"])
         print("CNPJ:", cnpj)
         print("Saldo:", users["saldo"])
         print("Tipo da conta:", users["tipo_conta"])
         print("Senha:", users["senha"])
-        print()
+        print("="*40)
 
 
 def debito():
     with open("dados.json", "r") as arquivo_json:
         dados = json.load(arquivo_json)
-
-    cnpj = int(input("Digite o seu CNPJ: "))
-    while(True):
+    
+    cnpj = input("Digite o seu CNPJ: ")
+    
+    if cnpj in dados:            
         try:
             valor = float(input("Digite o valor que será debitado: "))  # Pede ao usuário o valor que será debitado
-            break
-        except ValueError:      
-            print("Tipo de saldo inválido, tente novamente apenas com números.")    # Caso o valor esteja digitado incorretamente, o programa retorna para o usuário o erro e pede para que ele coloque novamente
-        for cnpj, user in dados.items():
-            if cnpj == dados[cnpj]:
-                dados[cnpj]["saldo"] -= valor     # O programa debita da conta do usuário e retorna ao programa o valor já ajustado
+            if valor <= dados[cnpj]["saldo"]:
+                dados[cnpj]["saldo"] -= valor
+                historico = data_atual()
+                lista = ["Debito", valor, dados[cnpj]["saldo"],historico]
+                dados[cnpj]["transacoes"].append(lista)
                 with open("dados.json", "w") as arquivo_json:
                     json.dump(dados, arquivo_json, indent=4)
                 print("Valor debitado com sucesso, o seu saldo atual é de:", dados[cnpj]["saldo"])
-                break
             else:
-                print("Usuário inválido, tente novamente")
+                print("O seu saldo é menor que o desejado para debitar")
+        except ValueError:      
+                print("Tipo de saldo inválido, tente novamente apenas com números.")    # Caso o valor esteja digitado incorretamente, o programa retorna para o usuário o erro e pede para que ele coloque novamente
+    else:
+        print("Não foi possível encontrar o CNPJ. ")
+       
         
 
 def deposito():
-    cnpj = int(input("Digite o seu CNPJ: "))
-    if validar(cnpj) == True:
-        while(True):
-            try:
-                valor = float(input("Digite o valor que será depositado: "))    # assim como na função debito(), é requisitado do usuário o valor a ser depositado
-                break
-            except ValueError:
-                print("Tipo de saldo inválido, tente novamente apenas com números.")
-        for chave in users.keys():
-            if chave == cnpj:
-                users[cnpj][2] += valor # O programa deposita na conta do usuário e retorna ao programa o valor já ajustado
-                print(users)
-                return users
+    with open("dados.json", "r") as arquivo_json:
+        dados = json.load(arquivo_json)
+
+    cnpj = input("Digite o seu CNPJ: ")
+    
+    if cnpj in dados:            
+        try:
+            valor = float(input("Digite o valor que será depositado: "))  # Pede ao usuário o valor que será debitado
+            dados[cnpj]["saldo"] += valor
+            historico = data_atual()
+            lista = ["Deposito", valor, dados[cnpj]["saldo"], historico]
+            dados[cnpj]["transacoes"].append(lista)
+            with open("dados.json", "w") as arquivo_json:
+                json.dump(dados, arquivo_json, indent=4)
+            print("Valor depositado com sucesso, o seu saldo atual é de:", dados[cnpj]["saldo"])
+        except ValueError:      
+                print("Tipo de saldo inválido, tente novamente apenas com números.")    # Caso o valor esteja digitado incorretamente, o programa retorna para o usuário o erro e pede para que ele coloque novamente
     else:
-        print("Usuário inválido, tente novamente")
+        print("Não foi possível encontrar o CNPJ. ")
+
 
 def transferencia_entre_contas():
-    cnpj = int(input("Digite o seu CNPJ: "))
+    with open("dados.json", "r") as arquivo_json:
+        dados = json.load(arquivo_json)
+
+    cnpj = input("Digite o seu CNPJ: ")
     if validar(cnpj) == True:   # O programa valida o cnpj e a senha do usuário, e caso estejam corretos, permitem continuar a função
-        destino = int(input("Digite o cnpj do destinatário: "))
+        destino = input("Digite o cnpj do destinatário: ")
         valor = float(input("Digite o valor da transfêrencia: "))
-        users[cnpj][2] -= valor     # O valor é debitado da conta do remetente e adicionado à conta do destinatário
-        users[destino][2] += valor
-        print(users)
-        return users
+        if valor < dados[cnpj]["saldo"]:
+            dados[cnpj]["saldo"] -= valor     # O valor é debitado da conta do remetente e adicionado à conta do destinatário
+            historico = data_atual()
+            lista = ["Transferencia", valor, dados[cnpj]["saldo"], historico]
+            lista_destino = ["Transferencia", -valor, dados[destino]["saldo"], historico]
+            dados[cnpj]["transacoes"].append(lista)
+            dados[destino]["transacoes"].append(lista_destino)
+            with open("dados.json", "w") as arquivo_json:
+                json.dump(dados, arquivo_json, indent=4) 
+        else:
+            print("Você não tem o saldo suficiente para essa transação.")
+        dados[destino]["saldo"] += valor
+       
+        
+
 def extrato():
     cnpj = input("Digite o seu CNPJ: ")
     senha = input("Digite sua senha: ")
@@ -181,6 +212,7 @@ def operacao_livre():
     print("Essa função será decidida no futuro")
 
 
-
-
-
+def data_atual():
+    data_atual = datetime.datetime.now()
+    data_atual = data_atual.strftime("%d/%m/%Y %H:%M:%S")
+    return data_atual

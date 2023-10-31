@@ -1,14 +1,42 @@
 {
     "123": {
-        "razao_social": "abc",
-        "saldo": 100.0,
-        "tipo_conta": "plus",
-        "senha": "123456"
+        "razao_social": "Giovanni Antonio Moreira",
+        "saldo": 1350.0,
+        "tipo_conta": "Plus",
+        "senha": "123456",
+        "transacoes": [
+            [
+                "Debito",
+                100.0,
+                1350.0,
+                "31/10/2023 20:36:47"
+            ],
+            [
+                "Deposito",
+                200.0,
+                1550.0,
+                "31/10/2023 20:37:04"
+            ],
+            [
+                "Transferencia",
+                200.0,
+                1350.0,
+                "31/10/2023 20:37:20"
+            ]
+        ]
     },
-    "567": {
-        "razao_social": "sim",
-        "saldo": 410.0,
-        "tipo_conta": "comum",
-        "senha": "123abc"
+    "321": {
+        "razao_social": "Artur Chaves Paiva",
+        "saldo": 1000.0,
+        "tipo_conta": "Plus",
+        "senha": "654321",
+        "transacoes": [
+            [
+                "Transferencia",
+                -200.0,
+                1000.0,
+                "31/10/2023 20:37:20"
+            ]
+        ]
     }
 }
