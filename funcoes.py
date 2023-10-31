@@ -1,18 +1,19 @@
-from users import *
 import json
 
 def validar(cnpj):
     tentativa = 0
-    chaves = users.keys()
+    with open("dados.json", "r") as arquivo_json:
+        dados = json.load(arquivo_json)
+
     while(True):
-        if cnpj in chaves: # Caso o cnpj seja correto a próxima validação é a senha            
+        if str(cnpj) in dados:  # Verifica se o CNPJ está no dicionário
             senha = input("Digite sua senha: ")
+            if senha == dados[str(cnpj)]["senha"]:  # Verifica se a senha corresponde ao CNPJ
+                return True
             tentativa += 1
             if tentativa == 3:
                 print("Reinicie o programa e tente novamente.")
                 break
-            if senha in users[cnpj]:  # O programa valida se a senha é compátivel com o cnpj e permite o acesso ao usuário
-                return True
         else:
             return False
 
@@ -71,11 +72,11 @@ def novo_cliente():
         except ValueError:
             print("Valor inválido, tente novamente!")
 
-    tipo_conta = input("tipo da conta(comum/plus): ").capitalize()
+    tipo_conta = input("Tipo da conta(comum/plus): ").capitalize()
     while tipo_conta != "Comum" and tipo_conta != "Plus":
         tipo_conta = input("Por favor insira uma opção correta do seu tipo de conta: ")
 
-    senha = input("senha: ")
+    senha = input("Senha: ")
     while(True):
             if len(senha) < 6:
                 senha = input("Crie uma senha com pelo menos 6 dígitos: ")
@@ -86,47 +87,63 @@ def novo_cliente():
             "razao_social": razao_social,
             "saldo" : saldo,
             "tipo_conta" : tipo_conta,
-            "senha" : senha
+            "senha" : senha,
+            "transacoes": {}
         }
         
     with open("dados.json", "w") as arquivo_json:
         json.dump(dados, arquivo_json, indent=4)
 
 def apaga_cliente():
+
     cnpj = int(input("Digite o seu CNPJ: "))
-    if validar(cnpj) == True:  # O programa valida cnpj e a senha, caso estejam corretos, a conta será deletada
-        del users[cnpj]
+
+    with open("dados.json", "r") as arquivo_json:
+        dados = json.load(arquivo_json)
+
+    if str(cnpj) in dados:
+        del dados[str(cnpj)]
+
+        with open("dados.json", "w") as arquivo_json:
+            json.dump(dados, arquivo_json, indent=4)
+        print("Cliente removido com sucesso!")
     else:
-        print("Usuario não cadastrado")
+        print("CNPJ não encontrado, tente novamente com um valor válido!")
 
 def listar_clientes():
-    cnpj = int(input("Digite o seu CNPJ: "))    
-    if validar(cnpj) == True:      
-        for chave in users.keys():
-            print("")       # O programa busca no dicionário os respectivos valores e mostra ao cliente
-            print("Portador do cnpj: ", chave)
-            print("Razão social: ", users[chave][1])
-            print("Valor: ", users[chave][2])
-            print("Senha: R$ ", users[chave][3])
-            print("")
-    else:
-        print("Usuario não cadastrado")
+    with open("dados.json", "r") as arquivo_json:
+        dados = json.load(arquivo_json)
+    print("Clientes:")
+    print()
+    for cnpj, users in dados.items():
+        print("Razão social:", users["razao_social"])
+        print("CNPJ:", cnpj)
+        print("Saldo:", users["saldo"])
+        print("Tipo da conta:", users["tipo_conta"])
+        print("Senha:", users["senha"])
+        print()
+
 
 def debito():
+    with open("dados.json", "r") as arquivo_json:
+        dados = json.load(arquivo_json)
+
     cnpj = int(input("Digite o seu CNPJ: "))
-    if validar(cnpj) == True:
-        while(True):
-            try:
-                valor = float(input("Digite o valor que será debitado: "))  # Pede ao usuário o valor que será debitado
+    while(True):
+        try:
+            valor = float(input("Digite o valor que será debitado: "))  # Pede ao usuário o valor que será debitado
+            break
+        except ValueError:      
+            print("Tipo de saldo inválido, tente novamente apenas com números.")    # Caso o valor esteja digitado incorretamente, o programa retorna para o usuário o erro e pede para que ele coloque novamente
+        for cnpj, user in dados.items():
+            if cnpj == dados[cnpj]:
+                dados[cnpj]["saldo"] -= valor     # O programa debita da conta do usuário e retorna ao programa o valor já ajustado
+                with open("dados.json", "w") as arquivo_json:
+                    json.dump(dados, arquivo_json, indent=4)
+                print("Valor debitado com sucesso, o seu saldo atual é de:", dados[cnpj]["saldo"])
                 break
-            except ValueError:      
-                print("Tipo de saldo inválido, tente novamente apenas com números.")    # Caso o valor esteja digitado incorretamente, o programa retorna para o usuário o erro e pede para que ele coloque novamente
-        for chave in users.keys():
-            if chave == cnpj:
-                users[cnpj][2] -= valor     # O programa debita da conta do usuário e retorna ao programa o valor já ajustado
-                return users
-    else:
-        print("Usuário inválido, tente novamente")
+            else:
+                print("Usuário inválido, tente novamente")
         
 
 def deposito():
