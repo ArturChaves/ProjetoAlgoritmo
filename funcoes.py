@@ -204,10 +204,15 @@ def transferencia_entre_contas():
         
 
 def extrato():
+    with open("dados.json", "r") as arquivo_json:
+        dados = json.load(arquivo_json)
     cnpj = input("Digite o seu CNPJ: ")
-    senha = input("Digite sua senha: ")
-    print("Aqui será mostrado o extrato do cliente")
+    if cnpj in dados:
+        for tipo, valor, saldo, data in dados[cnpj]["transacoes"]:
+            print("Tipo:", tipo, "| Valor:", valor, "| Saldo:", saldo, "| Data:", data)
+            
 
+        
 def operacao_livre():
     print("Essa função será decidida no futuro")
 
