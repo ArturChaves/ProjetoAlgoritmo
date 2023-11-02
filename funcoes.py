@@ -190,16 +190,16 @@ def transferencia_entre_contas():
         valor = float(input("Digite o valor da transfêrencia: "))
         if valor < dados[cnpj]["saldo"]:
             dados[cnpj]["saldo"] -= valor     # O valor é debitado da conta do remetente e adicionado à conta do destinatário, e a transação fica salva no extrato dos dois clientes envolvidos na transferência
+            dados[destino]["saldo"] += valor
             historico = data_atual()
-            lista = ["Transferencia", valor, dados[cnpj]["saldo"], historico]
-            lista_destino = ["Transferencia", -valor, dados[destino]["saldo"], historico]
+            lista = ["Transferencia", -valor, dados[cnpj]["saldo"], historico]
+            lista_destino = ["Transferencia", valor, dados[destino]["saldo"], historico]
             dados[cnpj]["transacoes"].append(lista)
             dados[destino]["transacoes"].append(lista_destino)
             with open("dados.json", "w") as arquivo_json:
                 json.dump(dados, arquivo_json, indent=4) 
         else:
             print("Você não tem o saldo suficiente para essa transação.")
-        dados[destino]["saldo"] += valor
        
         
 
