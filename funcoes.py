@@ -18,6 +18,7 @@ def validar(cnpj):
             return False
 
 def login():
+    estilo = Fore.LIGHTGREEN_EX + Style.BRIGHT
     while(True):
         login = input(Fore.LIGHTGREEN_EX + Style.BRIGHT +"""
                                                    
@@ -33,10 +34,12 @@ def login():
  """)
     
         if login == '1':
-            cnpj = int(input("Digite o seu CNPJ: "))
+            print("")
+            cnpj = int(input(estilo + "Digite o seu CNPJ: "))
             if validar(cnpj) == True:   # faz a validação por meio da função e permite o login do user
                 break
             else:
+                print("")
                 print("Usuário não cadastrado, tente novamente.")
             
         if login == '2':
@@ -47,9 +50,11 @@ def login():
 
 def novo_cliente():
     dados = ler()
+    estilo = Fore.LIGHTGREEN_EX + Style.BRIGHT
     while(True):
         try:
-            cnpj = int(input("CNPJ: "))
+            print("")
+            cnpj = int(input(estilo + "CNPJ: "))
             cnpj = str(cnpj)
             validacao_cnpj = True
             if len(cnpj) == 3:      # aqui faz a comparação para saber o tamanho do cnpj, caso seja 14, está liberado para continuar as proximas etapas
@@ -59,13 +64,13 @@ def novo_cliente():
                     else:
                         break
                 if validacao_cnpj == False:
-                    print("Já existe uma conta cadastrada com esse CNPJ, tente novamente!")
+                    print_vermelho("Já existe uma conta cadastrada com esse CNPJ, tente novamente!")
                 else:
                     break
             else:
-                print("Valor inválido, tente novamente!")
+                print_vermelho("Valor inválido, tente novamente!")
         except ValueError:
-            print("CNPJ invalido")
+            print_vermelho("CNPJ invalido")
         
     
         
@@ -74,10 +79,10 @@ def novo_cliente():
 
     while(True):
         try:
-            saldo = float(input("Informe o saldo inicial de sua conta: "))
+            saldo = float(input_verde("Informe o saldo inicial de sua conta: "))
             break
         except ValueError:
-            print("Valor inválido, tente novamente!")
+            print_vermelho("Valor inválido, tente novamente!")
 
     tipo_conta = input("Tipo da conta(comum/plus): ").capitalize()
     while tipo_conta != "Comum" and tipo_conta != "Plus":
@@ -141,7 +146,7 @@ def listar_clientes():
 def debito():
     dados = ler()
     
-    cnpj = input("Digite o seu CNPJ: ")
+    cnpj = input("  Digite o seu CNPJ: ")
     
     if cnpj in dados:            
         try:
@@ -298,7 +303,10 @@ def escrever(dados):
         json.dump(dados, arquivo_json, indent=4)
         
 def print_verde(texto):
-    print(Fore.LIGHTGREEN_EX + texto + Style.RESET_ALL)
+    print(Style.RESET_ALL + Fore.LIGHTGREEN_EX + Style.BRIGHT + texto)
 
 def input_verde(texto):
-    input(Fore.LIGHTGREEN_EX + texto + Style.RESET_ALL)
+    input(Style.RESET_ALL + Fore.LIGHTGREEN_EX + Style.BRIGHT + texto)
+    
+def print_vermelho(texto):
+    print(Style.RESET_ALL + Fore.RED + Style.BRIGHT + texto)

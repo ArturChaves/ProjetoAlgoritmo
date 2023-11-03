@@ -6,7 +6,7 @@ init(autoreset=True)
 login()
 
 while(True):
-    operacao = input( Fore.LIGHTGREEN_EX + Style.BRIGHT +"""
+    operacao = input_verde("""
 =================================================
     Escolha a operação desejada:                
                                                    
