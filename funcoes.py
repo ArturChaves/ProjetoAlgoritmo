@@ -1,6 +1,7 @@
 import datetime
 import json
 from colorama import Fore, Style
+from funcionarios import *
 
 def validar(cnpj):
     tentativa = 0
@@ -258,11 +259,6 @@ def extrato():
                 print_verde(f"Tipo: {tipo} | Valor: R$ {valor} | Saldo atual: R$ {saldo} | Data: {data}")
                 print("")
 
-
-        
-def gerenciar_funcionarios():
-    while(True):
-        print()
     
 def verificar_cnpj():
     dados = ler()
