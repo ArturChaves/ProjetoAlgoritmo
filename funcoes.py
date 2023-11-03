@@ -1,6 +1,6 @@
 import datetime
 import json
-from colorama import Fore, Back, Style
+from colorama import Fore, Style
 
 def validar(cnpj):
     tentativa = 0
@@ -48,21 +48,24 @@ def login():
 def novo_cliente():
     dados = ler()
     while(True):
-        cnpj = int(input("CNPJ: "))
-        cnpj = str(cnpj)
-        validacao_cnpj = True
-        if len(cnpj) == 3:      # aqui faz a comparação para saber o tamanho do cnpj, caso seja 14, está liberado para continuar as proximas etapas
-            for contas in dados.keys():
-                if cnpj in contas:
-                    validacao_cnpj = False
+        try:
+            cnpj = int(input("CNPJ: "))
+            cnpj = str(cnpj)
+            validacao_cnpj = True
+            if len(cnpj) == 3:      # aqui faz a comparação para saber o tamanho do cnpj, caso seja 14, está liberado para continuar as proximas etapas
+                for contas in dados.keys():
+                    if cnpj in contas:
+                        validacao_cnpj = False
+                    else:
+                        break
+                if validacao_cnpj == False:
+                    print("Já existe uma conta cadastrada com esse CNPJ, tente novamente!")
                 else:
                     break
-            if validacao_cnpj == False:
-                print("Valor inválido, tente novamente!")
             else:
-                break
-        else:
-            print("Valor inválido, tente novamente!")
+                print("Valor inválido, tente novamente!")
+        except ValueError:
+            print("CNPJ invalido")
         
     
         
@@ -78,7 +81,7 @@ def novo_cliente():
 
     tipo_conta = input("Tipo da conta(comum/plus): ").capitalize()
     while tipo_conta != "Comum" and tipo_conta != "Plus":
-        tipo_conta = input("Por favor insira uma opção correta do seu tipo de conta: ")
+        tipo_conta = input("Por favor insira uma opção correta do seu tipo de conta: ").capitalize()
 
     senha = input("Senha: ")
     while(True):
@@ -92,7 +95,8 @@ def novo_cliente():
             "saldo" : saldo,
             "tipo_conta" : tipo_conta,
             "senha" : senha,
-            "transacoes": []
+            "transacoes": [],
+            "funcionarios": {}
         }       # esse é o modelo do dicionario que consta no arquivo .json
         
     escrever(dados) # com esse comando, esse dicionario é escrito no json dessa maneira

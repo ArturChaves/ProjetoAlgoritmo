@@ -93,5 +93,20 @@
         "tipo_conta": "Comum",
         "senha": "654321",
         "transacoes": []
+    },
+    "122": {
+        "razao_social": "fodase",
+        "saldo": 1000.0,
+        "tipo_conta": "Plus",
+        "senha": "123456",
+        "transacoes": []
+    },
+    "222": {
+        "razao_social": "sim",
+        "saldo": 1000.0,
+        "tipo_conta": "Plus",
+        "senha": "123456",
+        "transacoes": [],
+        "funcionarios": {}
     }
 }
