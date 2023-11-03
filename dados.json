@@ -1,7 +1,7 @@
 {
     "123": {
         "razao_social": "Giovanni Antonio Moreira",
-        "saldo": 4179.0,
+        "saldo": 4279.0,
         "tipo_conta": "Plus",
         "senha": "123456",
         "transacoes": [
@@ -43,6 +43,12 @@
                 4179.0,
                 "03/11/2023 15:54:04",
                 3.0
+            ],
+            [
+                "Deposito",
+                100.0,
+                4279.0,
+                "03/11/2023 17:12:19"
             ]
         ]
     },

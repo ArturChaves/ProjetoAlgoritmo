@@ -6,22 +6,21 @@ init(autoreset=True)
 login()
 
 while(True):
-    operacao = input( Fore.LIGHTGREEN_EX + Back.BLACK +"""
-    ===================================================
-                                                       
-    1. Novo cliente                                    
-    2. Apaga cliente                                   
-    3. Listar clientes                                 
-    4. Débito                                          
-    5. Depósito                                        
-    6. Extrato                                         
-    7. Transfêrencia entre contas                      
-    8. Operação a definir                              
-    9. Sair                                            
-                                                       
-    Escolha um tipo de operação:                       
-                                                       
-    ===================================================
+    operacao = input( Fore.LIGHTGREEN_EX + Style.BRIGHT +"""
+=================================================
+    Escolha a operação desejada:                
+                                                   
+    1. Novo cliente                                  
+    2. Apaga cliente                                
+    3. Listar clientes                                
+    4. Débito                                         
+    5. Depósito                                       
+    6. Extrato                                        
+    7. Transfêrencia entre contas                     
+    8. Operação a definir                             
+    9. Sair                                          
+                                                     
+=================================================
     """)
     
     if operacao == "1":
