@@ -1,4 +1,5 @@
 from funcoes import *
+from funcionarios import *
 from colorama import Fore, Back, Style, init
 
 init(autoreset=True)
@@ -6,7 +7,7 @@ init(autoreset=True)
 login()
 
 while(True):
-    operacao = input_verde("""
+    operacao = input(Fore.LIGHTGREEN_EX + Style.BRIGHT + """
 =================================================
     Escolha a operação desejada:                
                                                    
@@ -17,7 +18,7 @@ while(True):
     5. Depósito                                       
     6. Extrato                                        
     7. Transfêrencia entre contas                     
-    8. Operação a definir                             
+    8. Gerenciar Funcionários                             
     9. Sair                                          
                                                      
 =================================================

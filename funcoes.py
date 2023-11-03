@@ -1,7 +1,7 @@
 import datetime
 import json
 from colorama import Fore, Style
-from funcionarios import *
+
 
 def validar(cnpj):
     tentativa = 0
