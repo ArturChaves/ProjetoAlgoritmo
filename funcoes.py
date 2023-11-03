@@ -1,5 +1,6 @@
 import datetime
 import json
+from colorama import Fore, Back, Style
 
 def validar(cnpj):
     tentativa = 0
@@ -48,7 +49,7 @@ def novo_cliente():
         cnpj = int(input("CNPJ: "))
         cnpj = str(cnpj)
         validacao_cnpj = True
-        if len(cnpj) == 14:      # aqui faz a comparação para saber o tamanho do cnpj, caso seja 14, está liberado para continuar as proximas etapas
+        if len(cnpj) == 3:      # aqui faz a comparação para saber o tamanho do cnpj, caso seja 14, está liberado para continuar as proximas etapas
             for contas in dados.keys():
                 if cnpj in contas:
                     validacao_cnpj = False
@@ -132,18 +133,34 @@ def debito():
     if cnpj in dados:            
         try:
             valor = float(input("Digite o valor que será debitado: "))  # Pede ao usuário o valor que será debitado
-            if valor <= dados[cnpj]["saldo"]: # caso o valor que o user deseje ser debitado seja mais alto que o seu saldo atual, o cliente nao consegue continuar a operação
-                tarifa, valor = tarifar(valor, dados, cnpj)      
-                dados[cnpj]["saldo"] -= valor
-                historico = data_atual()
-                lista = ["Debito", valor, dados[cnpj]["saldo"],historico, tarifa]
-                dados[cnpj]["transacoes"].append(lista) # esse .append(lista) serve para adicionar as transações na conta do user, e será usado para fazer o extrato
+            if dados[cnpj]["tipo_conta"] == "Plus":
+                saldo_atual = dados[cnpj]["saldo"] - valor
+                if saldo_atual >= -5000:
+                    tarifa, valor = tarifar(valor, dados, cnpj)      
+                    dados[cnpj]["saldo"] -= valor
+                    historico = data_atual()
+                    lista = ["Debito", valor, dados[cnpj]["saldo"],historico, tarifa]
+                    dados[cnpj]["transacoes"].append(lista) # esse .append(lista) serve para adicionar as transações na conta do user, e será usado para fazer o extrato
+                    print("Valor debitado com sucesso, o seu saldo atual é de: R$", dados[cnpj]["saldo"])
+                else:
+                    print("Não foi possível completar esta ação, com esse valor, a sua conta ultrapassaria o limite negativo da sua conta")
+            
+            elif dados[cnpj]["tipo_conta"] == "Comum":
+                saldo_atual = dados[cnpj]["saldo"] - valor
+                if saldo_atual >= -1000:
+                    tarifa, valor = tarifar(valor, dados, cnpj)      
+                    dados[cnpj]["saldo"] -= valor
+                    historico = data_atual()
+                    lista = ["Debito", valor, dados[cnpj]["saldo"],historico, tarifa]
+                    dados[cnpj]["transacoes"].append(lista) # esse .append(lista) serve para adicionar as transações na conta do user, e será usado para fazer o extrato
+                    print("Valor debitado com sucesso, o seu saldo atual é de: R$", dados[cnpj]["saldo"])
+                else:
+                    print("Não foi possível completar esta ação, com esse valor, a sua conta ultrapassaria o limite negativo da sua conta")
+                          
+            escrever(dados)
                 
-                escrever(dados)
                 
-                print("Valor debitado com sucesso, o seu saldo atual é de:", dados[cnpj]["saldo"])
-            else:
-                print("O seu saldo é menor que o desejado para debitar")
+    
         except ValueError:      
                 print("Tipo de saldo inválido, tente novamente apenas com números.")    # Caso o valor esteja digitado incorretamente, o programa retorna para o usuário o erro e pede para que ele coloque novamente
     else:
@@ -170,6 +187,7 @@ def deposito():
         except ValueError:      
                 print("Tipo de saldo inválido, tente novamente apenas com números.")    # Caso o valor esteja digitado incorretamente, o programa retorna para o usuário o erro e pede para que ele coloque novamente
     else:
+        print("")
         print("Não foi possível encontrar o CNPJ. ")
 
 
@@ -228,7 +246,7 @@ def tarifar(valor, dados, cnpj):
         tarifa = valor*0.05
         valor += tarifa 
     return tarifa, valor
-
+        
 def ler():
     with open("dados.json", "r") as arquivo_json:
         dados = json.load(arquivo_json)
