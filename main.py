@@ -38,6 +38,6 @@ while(True):
     elif operacao == "7":
         transferencia_entre_contas()
     elif operacao == "8":
-        gerenciar_funcionarios()
+        menu_funcionarios()
     elif operacao == "9":
         break
