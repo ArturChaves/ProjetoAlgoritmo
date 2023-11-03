@@ -3,9 +3,7 @@ import json
 
 def validar(cnpj):
     tentativa = 0
-    with open("dados.json", "r") as arquivo_json:
-        dados = json.load(arquivo_json)
-
+    dados = ler()
     while(True):
         if str(cnpj) in dados:  # Verifica se o CNPJ está no dicionário
             senha = input("Digite sua senha: ")
@@ -45,10 +43,7 @@ def login():
 
 
 def novo_cliente():
-    with open("dados.json", "r") as arquivo_json:
-        dados = json.load(arquivo_json)
-
-
+    dados = ler()
     while(True):
         cnpj = int(input("CNPJ: "))
         cnpj = str(cnpj)
@@ -97,28 +92,25 @@ def novo_cliente():
             "transacoes": []
         }       # esse é o modelo do dicionario que consta no arquivo .json
         
-    with open("dados.json", "w") as arquivo_json:
-        json.dump(dados, arquivo_json, indent=4) # com esse comando, esse dicionario é escrito no json dessa maneira
+    escrever(dados) # com esse comando, esse dicionario é escrito no json dessa maneira
 
 def apaga_cliente():
 
     cnpj = int(input("Digite o seu CNPJ: "))
 
-    with open("dados.json", "r") as arquivo_json:
-        dados = json.load(arquivo_json)     # o with open("dados","r") serve para fazer a leitura do dicionario, o load puxa esses dados e transforma em um dicionario que pode ser manipulado no python
+    dados = ler() # o with open("dados","r") serve para fazer a leitura do dicionario, o load puxa esses dados e transforma em um dicionario que pode ser manipulado no python
 
     if str(cnpj) in dados:
         del dados[str(cnpj)]
 
-        with open("dados.json", "w") as arquivo_json:
-            json.dump(dados, arquivo_json, indent=4)
+        escrever(dados)
+
         print("Cliente removido com sucesso!")  # o arquivo muda os valores que se pede e reescreve o dicionario e passa ao arquivo json
     else:
         print("CNPJ não encontrado, tente novamente com um valor válido!")
 
 def listar_clientes():
-    with open("dados.json", "r") as arquivo_json:
-        dados = json.load(arquivo_json)
+    dados = ler()
     print("="*40)
     print("Clientes:")
     print()
@@ -133,8 +125,7 @@ def listar_clientes():
 
 
 def debito():
-    with open("dados.json", "r") as arquivo_json:
-        dados = json.load(arquivo_json)
+    dados = ler()
     
     cnpj = input("Digite o seu CNPJ: ")
     
@@ -142,12 +133,14 @@ def debito():
         try:
             valor = float(input("Digite o valor que será debitado: "))  # Pede ao usuário o valor que será debitado
             if valor <= dados[cnpj]["saldo"]: # caso o valor que o user deseje ser debitado seja mais alto que o seu saldo atual, o cliente nao consegue continuar a operação
+                tarifa, valor = tarifar(valor, dados, cnpj)      
                 dados[cnpj]["saldo"] -= valor
                 historico = data_atual()
-                lista = ["Debito", valor, dados[cnpj]["saldo"],historico]
+                lista = ["Debito", valor, dados[cnpj]["saldo"],historico, tarifa]
                 dados[cnpj]["transacoes"].append(lista) # esse .append(lista) serve para adicionar as transações na conta do user, e será usado para fazer o extrato
-                with open("dados.json", "w") as arquivo_json:
-                    json.dump(dados, arquivo_json, indent=4)
+                
+                escrever(dados)
+                
                 print("Valor debitado com sucesso, o seu saldo atual é de:", dados[cnpj]["saldo"])
             else:
                 print("O seu saldo é menor que o desejado para debitar")
@@ -159,8 +152,7 @@ def debito():
         
 
 def deposito():
-    with open("dados.json", "r") as arquivo_json:
-        dados = json.load(arquivo_json) # este comando segue a mesma logica da função débito, o programa lê o dicionario, passa para o python que faz as mudanças necessárias e logo após disso, o reescreve novamente em formato .json
+    dados = ler() # este comando segue a mesma logica da função débito, o programa lê o dicionario, passa para o python que faz as mudanças necessárias e logo após disso, o reescreve novamente em formato .json
 
     cnpj = input("Digite o seu CNPJ: ")
     
@@ -171,8 +163,9 @@ def deposito():
             historico = data_atual()
             lista = ["Deposito", valor, dados[cnpj]["saldo"], historico]
             dados[cnpj]["transacoes"].append(lista)
-            with open("dados.json", "w") as arquivo_json:
-                json.dump(dados, arquivo_json, indent=4)
+            
+            escrever(dados)
+
             print("Valor depositado com sucesso, o seu saldo atual é de:", dados[cnpj]["saldo"])
         except ValueError:      
                 print("Tipo de saldo inválido, tente novamente apenas com números.")    # Caso o valor esteja digitado incorretamente, o programa retorna para o usuário o erro e pede para que ele coloque novamente
@@ -181,8 +174,8 @@ def deposito():
 
 
 def transferencia_entre_contas():
-    with open("dados.json", "r") as arquivo_json:
-        dados = json.load(arquivo_json)
+    
+    dados = ler()
 
     cnpj = input("Digite o seu CNPJ: ")
     if validar(cnpj) == True:   # O programa valida o cnpj e a senha do usuário, e caso estejam corretos, permitem continuar a função
@@ -196,21 +189,26 @@ def transferencia_entre_contas():
             lista_destino = ["Transferencia", valor, dados[destino]["saldo"], historico]
             dados[cnpj]["transacoes"].append(lista)
             dados[destino]["transacoes"].append(lista_destino)
-            with open("dados.json", "w") as arquivo_json:
-                json.dump(dados, arquivo_json, indent=4) 
+            escrever(dados)
         else:
             print("Você não tem o saldo suficiente para essa transação.")
        
         
 
 def extrato():
-    with open("dados.json", "r") as arquivo_json:
-        dados = json.load(arquivo_json)
+
+    dados = ler()
+
     cnpj = input("Digite o seu CNPJ: ")
     if cnpj in dados:
-        for tipo, valor, saldo, data in dados[cnpj]["transacoes"]:
-            print("Tipo:", tipo, "| Valor:", valor, "| Saldo:", saldo, "| Data:", data)
-            
+        for transacoes in dados[cnpj]["transacoes"]:
+            if len(transacoes) == 5 :
+                tipo, valor, saldo, data, tarifa = transacoes
+                print(f"Tipo: {tipo} | Valor: {valor}R$ | Tarifa: {tarifa}R$ | Saldo atual: {saldo}R$ | Data: {data}")
+            else:
+                tipo, valor, saldo, data = transacoes
+                print(f"Tipo: {tipo} | Valor: {valor}R$ | Saldo atual: {saldo}R$ | Data: {data}")
+
 
         
 def operacao_livre():
@@ -221,3 +219,22 @@ def data_atual():
     data_atual = datetime.datetime.now()
     data_atual = data_atual.strftime("%d/%m/%Y %H:%M:%S")
     return data_atual
+
+def tarifar(valor, dados, cnpj):
+    if dados[cnpj]["tipo_conta"] == "Plus":
+        tarifa = valor*0.03
+        valor += tarifa
+    elif dados[cnpj]["tipo_conta"] == "Comum":
+        tarifa = valor*0.05
+        valor += tarifa 
+    return tarifa, valor
+
+def ler():
+    with open("dados.json", "r") as arquivo_json:
+        dados = json.load(arquivo_json)
+        return dados
+
+def escrever(dados):
+    with open("dados.json", "w") as arquivo_json:
+        json.dump(dados, arquivo_json, indent=4)
+        
