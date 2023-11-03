@@ -256,9 +256,19 @@ def extrato():
 
 
         
-def operacao_livre():
-    print("Essa função será decidida no futuro")
-
+def gerenciar_funcionarios():
+    while(True):
+        print()
+    
+def verificar_cnpj():
+    dados = ler()
+    for tentativas in range(3):
+        try:
+            cnpj = int(input("Digite seu CNPJ: "))
+            if cnpj in dados:
+                return True
+        except ValueError:
+            print("CNPJ inválido, favor inserir novamente")
 
 def data_atual():
     data_atual = datetime.datetime.now()
