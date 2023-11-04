@@ -16,25 +16,30 @@ def menu_funcionarios():
                     if cnpj in contas:
                         while True:
                             operacao = input(Fore.LIGHTBLUE_EX + Style.BRIGHT + """
+
 =================================================
     Escolha a operação desejada:                
                                                                                     
     1. Cadastrar funcionário                                  
     2. Remover funcionário
     3. Listar funcionários
-    4. Pagar funcionários
-    5. Sair 
+    4. Alterar Salario
+    5. Pagar funcionários
+    6. Sair 
 =================================================
+
 """)
                             if operacao == "1":
                                 cadastro_funcionario(cnpj)
                             if operacao == "2":
                                 apaga_funcionario()
                             if operacao == "3":
-                                print("Operação 3 selecionada.")
+                                listar_funcionarios()                                
                             if operacao == "4":
-                                print("Operação 4 selecionada.")
+                                alterar_salario()
                             if operacao == "5":
+                                print("Operação 4 selecionada.")
+                            if operacao == "6":
                                 break  # Sair do loop interno
                         break  # Sair do loop externo
                 break
@@ -114,3 +119,48 @@ def apaga_funcionario():
     else:
         print()
         print_vermelho("CNPJ não encontrado")
+
+def listar_funcionarios():
+    estilo = Fore.LIGHTBLUE_EX + Style.BRIGHT
+    dados = ler()
+    cnpj = input(estilo + "Informe o CNPJ: ")
+    if cnpj in dados:
+        funcionarios = dados[cnpj]["funcionarios"]
+        print_verde("="*40)
+        print()
+        print_azul(Style.BRIGHT + "Clientes:")
+        print()
+        for cpf, dados_funcionario in funcionarios.items():
+            print_azul("="*40)
+            print()
+            print(estilo + "Nome:", dados_funcionario["nome"])
+            print(estilo + "CPF:", cpf)
+            print(estilo + "Saldo:", dados_funcionario["saldo"])
+            print(estilo + "Tipo da conta:", dados_funcionario["salario"])
+            print()
+        return cnpj
+    else:
+        print_vermelho(Style.BRIGHT + "CNPJ invalido, favor inserir novamente")
+
+
+def alterar_salario():
+    estilo = Fore.LIGHTBLUE_EX + Style.BRIGHT
+    dados = ler()
+    cnpj = listar_funcionarios()
+    funcionarios = dados[cnpj]["funcionarios"]
+    while(True):
+        cpf = input(estilo + "Informe o cpf do colaborador para alterar seu salário: ").capitalize()
+        if cpf in funcionarios.keys():
+            try:
+                novo_salario = float(input(estilo + "Informe o novo salário do colaborador: "))
+                funcionarios[cpf]["salario"] = novo_salario
+                escrever(dados)
+                print_verde("Salário alterado com sucesso")
+
+            except ValueError:
+                print_vermelho("Valor invalido de salario, tente novamente.")
+        else:
+            print_vermelho("Funcionario não encontrado, favor tentar novamente")
+def pagar_funcionarios():
+    estilo = Fore.LIGHTBLUE_EX + Style.BRIGHT
+    dados = ler()

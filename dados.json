@@ -4,45 +4,30 @@
         "saldo": 4279.0,
         "tipo_conta": "Plus",
         "senha": "123456",
-        "transacoes": [
-            [
-                "Debito",
-                103.0,
-                4282.0,
-                "03/11/2023 15:52:36",
-                3.0
-            ],
-            [
-                "Debito",
-                103.0,
-                4179.0,
-                "03/11/2023 15:54:04",
-                3.0
-            ],
-            [
-                "Deposito",
-                100.0,
-                4279.0,
-                "03/11/2023 17:12:19"
-            ]
-        ],
+        "transacoes": [],
         "funcionarios": {
             "111": {
-                "nome": "giovanni",
+                "nome": "Giovanni",
                 "saldo": 0.0,
-                "salario": 1250.0,
+                "salario": 900.0,
                 "transacoes": []
             },
             "222": {
-                "nome": "sla",
+                "nome": "Sla",
                 "saldo": null,
                 "salario": 2000.0,
                 "transacoes": []
             },
             "333": {
-                "nome": "sim",
+                "nome": "Sim",
                 "saldo": null,
-                "salario": 1500.0,
+                "salario": 200.0,
+                "transacoes": []
+            },
+            "666": {
+                "nome": "Sophia Apelona",
+                "saldo": null,
+                "salario": 50000.0,
                 "transacoes": []
             }
         }
@@ -52,35 +37,14 @@
         "saldo": 4150.0,
         "tipo_conta": "Plus",
         "senha": "654321",
-        "transacoes": [
-            [
-                "Transferencia",
-                3000.0,
-                4150.0,
-                "02/11/2023 21:25:57"
-            ]
-        ]
+        "transacoes": []
     },
     "12345678901234": {
         "razao_social": "Jesus",
         "saldo": 20365.0,
         "tipo_conta": "Plus",
         "senha": "123456",
-        "transacoes": [
-            [
-                "Debito",
-                4635.0,
-                365.0,
-                "02/11/2023 20:00:16",
-                135.0
-            ],
-            [
-                "Deposito",
-                20000.0,
-                20365.0,
-                "02/11/2023 20:00:34"
-            ]
-        ]
+        "transacoes": []
     },
     "456": {
         "razao_social": "atchim",
