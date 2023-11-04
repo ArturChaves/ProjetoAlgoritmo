@@ -1,20 +1,21 @@
-from funcoes import ler, escrever, validar, data_atual, print_verde, input_verde, print_vermelho, verificar_cnpj
-from colorama import Fore, Style
-
+from funcoes import ler, escrever, validar, data_atual, print_verde, input_verde, print_vermelho, verificar_cnpj, verificar_cpf, print_azul
+from colorama import Fore, Style, init
+init(autoreset=True)
+import json
 
 def menu_funcionarios():
     dados = ler()
-    estilo = Fore.LIGHTGREEN_EX + Style.BRIGHT
+    estilo = Fore.LIGHTBLUE_EX + Style.BRIGHT
     while True:
         try:
             print("")
             cnpj = int(input(estilo + "CNPJ: "))
             cnpj = str(cnpj)
-            if len(cnpj) == 3:
+            if len(cnpj) == 3 and verificar_cnpj(cnpj) == True:
                 for contas in dados.keys():
                     if cnpj in contas:
                         while True:
-                            operacao = input(Fore.LIGHTGREEN_EX + Style.BRIGHT + """
+                            operacao = input(Fore.LIGHTBLUE_EX + Style.BRIGHT + """
 =================================================
     Escolha a operação desejada:                
                                                                                     
@@ -26,9 +27,9 @@ def menu_funcionarios():
 =================================================
 """)
                             if operacao == "1":
-                                print("Operação 1 selecionada.")
+                                cadastro_funcionario(cnpj)
                             if operacao == "2":
-                                print("Operação 2 selecionada.")
+                                apaga_funcionario()
                             if operacao == "3":
                                 print("Operação 3 selecionada.")
                             if operacao == "4":
@@ -42,9 +43,9 @@ def menu_funcionarios():
             break
 
 
-def cadastro_funcionario():
+def cadastro_funcionario(cnpj):
     dados = ler()
-    estilo = Fore.LIGHTGREEN_EX + Style.BRIGHT
+    estilo = Fore.LIGHTBLUE_EX + Style.BRIGHT
     while(True):
         try:
             print("")
@@ -71,33 +72,45 @@ def cadastro_funcionario():
 
     nome = input("Nome: ")
 
+    saldo = None
+            
     while(True):
         try:
-            saldo = float(input_verde("Informe o saldo inicial de sua conta: "))
+            salario = float(input(f"{estilo}Informe o salário de {nome}: "))
             break
         except ValueError:
             print_vermelho("Valor inválido, tente novamente!")
 
-    tipo_conta = input("Tipo da conta(comum/plus): ").capitalize()
-    while tipo_conta != "Comum" and tipo_conta != "Plus":
-        tipo_conta = input("Por favor insira uma opção correta do seu tipo de conta: ").capitalize()
-
-    senha = input("Senha: ")
-    while(True):
-            if len(senha) < 6:
-                senha = input("Crie uma senha com pelo menos 6 dígitos: ")
-            else:
-                break
-
     dados[cnpj]["funcionarios"][cpf] = {
             "nome": nome,
             "saldo" : saldo,
+            "salario": salario,
             "transacoes": [],
         }       # esse é o modelo do dicionario que consta no arquivo .json
         
     escrever(dados) # com esse comando, esse dicionario é escrito no json dessa maneira
+    print()
+    print_verde(f"O funcionário {nome} foi cadastrado com sucesso!")
 
-
-
-
+def apaga_funcionario():
+    estilo = Fore.LIGHTBLUE_EX + Style.BRIGHT
+    dados = ler()
+    print()
+    cnpj = int(input(estilo + "CNPJ: "))
+    cnpj = str(cnpj)
     
+    if verificar_cnpj(cnpj):
+        cpf = int(input(estilo + "CPF: "))
+        cpf = str(cpf)
+        
+        if verificar_cpf(cpf, cnpj):
+            del dados[cnpj]["funcionarios"][cpf]
+            escrever(dados)
+            print()
+            print_verde(f"O funcionário portador do CPF: {cpf} foi deletado com sucesso")
+        else:
+            print()
+            print_vermelho("Não existe funcionário com esse CPF para este CNPJ")
+    else:
+        print()
+        print_vermelho("CNPJ não encontrado")

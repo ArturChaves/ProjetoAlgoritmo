@@ -17,11 +17,20 @@ def validar(cnpj):
                 break
         else:
             return False
+        
+def verificar_cpf(cpf, cnpj):
+    tentativa = 0
+    dados = ler()
+    while(True):
+        if str(cpf) in dados[cnpj]["funcionarios"]:  # Verifica se o CNPJ está no dicionário
+            return True
+        else:
+            return False
 
 def login():
-    estilo = Fore.LIGHTGREEN_EX + Style.BRIGHT
+    estilo = Fore.LIGHTBLUE_EX + Style.BRIGHT
     while(True):
-        login = input(Fore.LIGHTGREEN_EX + Style.BRIGHT +"""
+        login = input(Fore.LIGHTBLUE_EX + Style.BRIGHT +"""
                                                    
 ===================================================
         Bem vindo ao Banco QuemPoupaTem PJ         
@@ -51,7 +60,7 @@ def login():
 
 def novo_cliente():
     dados = ler()
-    estilo = Fore.LIGHTGREEN_EX + Style.BRIGHT
+    estilo = Fore.LIGHTBLUE_EX + Style.BRIGHT
     while(True):
         try:
             print("")
@@ -119,29 +128,30 @@ def apaga_cliente():
 
         escrever(dados)
         
-        print("")
+        print()
         print_verde("Cliente removido com sucesso!")  # o arquivo muda os valores que se pede e reescreve o dicionario e passa ao arquivo json
-        print("")
+        print()
     else:
-        print("")
+        print()
         print_verde("CNPJ não encontrado, tente novamente com um valor válido!")
-        print("")
+        print()
 
 def listar_clientes():
+    estilo = Fore.LIGHTBLUE_EX + Style.BRIGHT
     dados = ler()
-    print("="*40)
-    print("")
-    print(Style.BRIGHT + "Clientes:")
-    print("")
+    print_verde("="*40)
+    print()
+    print_azul(Style.BRIGHT + "Clientes:")
+    print()
     for cnpj, users in dados.items():
-        print_verde("="*40)
-        print("")
-        print("Razão social:", users["razao_social"])
-        print("CNPJ:", cnpj)
-        print("Saldo:", users["saldo"])
-        print("Tipo da conta:", users["tipo_conta"])
-        print("Senha:", users["senha"])
-        print("")
+        print_azul("="*40)
+        print()
+        print(estilo + "Razão social:", users["razao_social"])
+        print(estilo + "CNPJ:", cnpj)
+        print(estilo + "Saldo:", users["saldo"])
+        print(estilo + "Tipo da conta:", users["tipo_conta"])
+        print(estilo + "Senha:", users["senha"])
+        print()
 
 
 def debito():
@@ -265,15 +275,16 @@ def extrato():
                 print("")
 
     
-def verificar_cnpj():
+def verificar_cnpj(cnpj):
     dados = ler()
     for tentativas in range(3):
         try:
-            cnpj = int(input("Digite seu CNPJ: "))
             if cnpj in dados:
                 return True
         except ValueError:
             print("CNPJ inválido, favor inserir novamente")
+        else:
+            return False
 
 def data_atual():
     data_atual = datetime.datetime.now()
@@ -300,6 +311,10 @@ def escrever(dados):
         
 def print_verde(texto):
     print(Style.RESET_ALL + Fore.LIGHTGREEN_EX + Style.BRIGHT + texto)
+    
+def print_azul(texto):
+    print(Style.RESET_ALL + Fore.LIGHTBLUE_EX + Style.BRIGHT + texto)
+
 
 def input_verde(texto):
     input(Style.RESET_ALL + Fore.LIGHTGREEN_EX + Style.BRIGHT + texto)
