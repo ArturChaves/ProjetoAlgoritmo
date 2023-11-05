@@ -90,7 +90,7 @@ def cadastro_funcionario(cnpj):
             "nome": nome,
             "saldo" : saldo,
             "salario": salario,
-            "transacoes": [],
+            "pagamentos": [],
         }       # esse é o modelo do dicionario que consta no arquivo .json
         
     escrever(dados) # com esse comando, esse dicionario é escrito no json dessa maneira
@@ -175,20 +175,17 @@ def menu_pagamento():
     Informe a operação:                
                                                                                     
     1. Pagar funcionarios                                  
-    2. Agendar pagamentos
-    3. Extrato dos pagamentos
-    4. Sair
+    2. Extrato dos pagamentos
+    3. Sair
                                      
 =================================================
 
 """)
             if operacao_pagamento == "1":
                 pagar_funcionarios(cnpj)
-            if operacao_pagamento == "1":
-                print()
-            if operacao_pagamento == "1":
-                print()
-            if operacao_pagamento == "4":
+            if operacao_pagamento == "2":
+                extrato_pagamentos(cnpj)
+            if operacao_pagamento == "3":
                 break
     else:
         print("")
@@ -225,10 +222,25 @@ def pagar(cnpj):
         dados[cnpj]["saldo"] -= salario["salario"]
         salario["saldo"] += salario["salario"]
         historico = data_atual()
-        lista = ["Transferencia", -salario["salario"], dados[cnpj]["saldo"], historico]
-        lista_destino = ["Transferencia", salario["salario"], salario["saldo"], historico]
+        lista = ["Pagamento", -salario["salario"], dados[cnpj]["saldo"], historico]
+        lista_destino = ["Recebimento", salario["salario"], salario["saldo"], historico]
         dados[cnpj]["transacoes"].append(lista)
-        salario["transacoes"].append(lista_destino)
+        salario["pagamentos"].append(lista_destino)
         escrever(dados)
+
+def extrato_pagamentos(cnpj):
+    estilo = Fore.LIGHTBLUE_EX + Style.BRIGHT
+    dados = ler()
+    funcionarios = dados[cnpj]["funcionarios"]
+    
+    for funcionario_cpf, funcionario in funcionarios.items():
+        print(f"Extrato de pagamentos para o  {funcionario['nome']} - {funcionario_cpf}:")
+        for pagamento in funcionario["pagamentos"]:
+            tipo, valor, saldo, data = pagamento
+            print("")
+            print(f"Tipo: {tipo} | Valor: R$ {valor} | Saldo atual: R$ {saldo} | Data: {data}")
+            print("")
+        print("___________________________________________________________________________")
+
 
 
