@@ -15,7 +15,7 @@ def validar(cnpj):
     # função para validar CNPJ e senha do usuário
     tentativa = 0
     dados = ler()
-    estilo_azul = Fore.LIGHTBLUE_EX + Style.BRIGHT
+    estilo_azul = Fore.CYAN + Style.BRIGHT
     estilo_branco = Fore.LIGHTWHITE_EX + Style.BRIGHT
     fim_estilo = Style.RESET_ALL
 
@@ -63,17 +63,18 @@ def login():
         try:
             if login == '1':
                 print("")
-                cnpj = int(input(estilo_azul + "Digite o seu CNPJ: "))
+                cnpj = int(input(estilo_azul + "Digite o seu CNPJ: " + estilo_branco))
                 if validar(cnpj) == True:  # realiza a validação usando a função e permite o login do usuário
                     break
                 else:
-                    print("")
-                    print("Usuário não cadastrado, tente novamente.")
+                    print()
+                    print_vermelho("Usuário não cadastrado, tente novamente.")
             
             if login == '2':
                 novo_cliente()
                 break
         except ValueError:
+            print()
             print_vermelho("CNPJ digitado incorretamente, tente novamente!")
             
 
@@ -81,11 +82,12 @@ def login():
 def novo_cliente():
     # função para criar um novo cliente
     dados = ler()
-    estilo = Fore.LIGHTBLUE_EX + Style.BRIGHT
+    estilo_azul = Style.RESET_ALL + Fore.CYAN + Style.BRIGHT
+    estilo_branco = Style.RESET_ALL + Fore.LIGHTWHITE_EX
     while(True):
         try:
             print("")
-            cnpj = int(input(estilo + "CNPJ: "))
+            cnpj = int(input(estilo_azul + "CNPJ: " + estilo_branco))
             cnpj = str(cnpj)
             validacao_cnpj = True
             if len(cnpj) == 14:  # verifica o tamanho do CNPJ, que deve ser 14 dígitos
@@ -103,23 +105,23 @@ def novo_cliente():
         except ValueError:
             print_vermelho("CNPJ inválido")
 
-    razao_social = input("Razão social: ")
+    razao_social = input(estilo_azul + "Razão social: " + estilo_branco)
 
     while(True):
         try:
-            saldo = float(input(Style.RESET_ALL + Fore.LIGHTBLUE_EX + Style.BRIGHT +"Informe o saldo inicial de sua conta: "))
+            saldo = float(input(estilo_azul +"Informe o saldo inicial de sua conta: " + estilo_branco))
             break
         except ValueError:
             print_vermelho("Valor inválido, tente novamente!")
 
-    tipo_conta = input("Tipo da conta(comum/plus): ").capitalize()
+    tipo_conta = input(estilo_azul + "Tipo da conta(comum/plus): " + estilo_branco).capitalize()
     while tipo_conta != "Comum" and tipo_conta != "Plus":
         tipo_conta = input("Por favor insira uma opção correta do seu tipo de conta: ").capitalize()
 
-    senha = input("Senha: ")
+    senha = input(estilo_azul + "Senha: " + estilo_branco)
     while(True):
         if len(senha) < 6:
-            senha = input("Crie uma senha com pelo menos 6 dígitos: ")
+            senha = input(estilo_azul + "Crie uma senha com pelo menos 6 dígitos: " + estilo_branco)
         else:
             break
 
@@ -135,9 +137,11 @@ def novo_cliente():
     escrever(dados)  # escreve este dicionário no arquivo .JSON
 
 def apaga_cliente():
+    estilo_azul = Style.RESET_ALL + Fore.CYAN + Style.BRIGHT
+    estilo_branco = Style.RESET_ALL + Fore.LIGHTWHITE_EX
     # função para remover um cliente
     print("")
-    cnpj = input("Digite o seu CNPJ: ")
+    cnpj = input(estilo_azul + "CNPJ: " + estilo_branco)
 
     dados = ler()  # realiza a leitura do dicionário a partir do arquivo JSON
 
@@ -151,37 +155,38 @@ def apaga_cliente():
         print()
     else:
         print()
-        print_verde("CNPJ não encontrado, tente novamente com um valor válido!")
+        print_vermelho("CNPJ não encontrado, tente novamente com um valor válido!")
         print()
 
 def listar_clientes():
     # função para listar os clientes
-    estilo = Fore.LIGHTBLUE_EX + Style.BRIGHT
+    estilo_azul = Style.RESET_ALL + Fore.CYAN + Style.BRIGHT
+    estilo_branco = Style.RESET_ALL + Fore.LIGHTWHITE_EX
     dados = ler()
-    print_verde("="*40)
+    print(estilo_azul + "="*40)
     print()
-    print_azul(Style.BRIGHT + "Clientes:")
+    print_azul(estilo_azul + "Clientes:")
     print()
     for cnpj, users in dados.items():
         print_azul("="*40)
         print()
-        print(estilo + "Razão social:", users["razao_social"])
-        print(estilo + "CNPJ:", cnpj)
-        print(estilo + "Saldo:", users["saldo"])
-        print(estilo + "Tipo da conta:", users["tipo_conta"])
-        print(estilo + "Senha:", users["senha"])
+        print(estilo_azul + "Razão social: " + estilo_branco + users["razao_social"])
+        print(estilo_azul + "CNPJ: " + estilo_branco + cnpj)
+        print(estilo_azul + "Saldo: " + estilo_branco + str(users["saldo"]))
+        print(estilo_azul + "Tipo da conta: " + estilo_branco + users["tipo_conta"])
+        print(estilo_azul + "Senha: " + estilo_branco + users["senha"])
         print()
 
 
 
 def debito():
     dados = ler()
+    estilo_azul = Style.RESET_ALL + Fore.CYAN + Style.BRIGHT
+    estilo_branco = Style.RESET_ALL + Fore.LIGHTWHITE_EX
     
-    cnpj = input("  Digite o seu CNPJ: ")
+    cnpj = input(estilo_azul + "  Digite o seu CNPJ: ")
     
-    if cnpj in dados:
-        estilo = Fore.LIGHTGREEN_EX + Style.BRIGHT
-        fim_estilo = Style.RESET_ALL         
+    if cnpj in dados:         
         try:
             valor = float(input("Digite o valor que será debitado: "))  # pede ao usuário o valor que será debitado
             if dados[cnpj]["tipo_conta"] == "Plus":
@@ -193,11 +198,11 @@ def debito():
                     lista = ["Debito", valor, dados[cnpj]["saldo"],historico, tarifa]
                     dados[cnpj]["transacoes"].append(lista) # esse .append(lista) serve para adicionar as transações na conta do user, e será usado para fazer o extrato
                     print("")
-                    print(estilo + "Valor debitado com sucesso, o seu saldo atual é de: " + fim_estilo + "R$", dados[cnpj]["saldo"])
+                    print_verde(f'Valor debitado com sucesso, o seu saldo atual é de: R$ {dados[cnpj]["saldo"]}')
                     print("")
                 else:
                     print("")
-                    print("Não foi possível completar esta ação, com esse valor, a sua conta ultrapassaria o limite negativo da sua conta")
+                    print_vermelho("Não foi possível completar esta ação, com esse valor, a sua conta ultrapassaria o limite negativo da sua conta")
                     print("")
                     
             elif dados[cnpj]["tipo_conta"] == "Comum":
@@ -209,36 +214,37 @@ def debito():
                     lista = ["Debito", valor, dados[cnpj]["saldo"],historico, tarifa]
                     dados[cnpj]["transacoes"].append(lista) # esse .append(lista) serve para adicionar as transações na conta do user, e será usado para fazer o extrato
                     print("")
-                    print_verde("Valor debitado com sucesso, o seu saldo atual é de: R$", dados[cnpj]["saldo"])
+                    print_verde(f'Valor debitado com sucesso, o seu saldo atual é de: R$ {dados[cnpj]["saldo"]}')
                     print("")
                 else:
                     print("")
-                    print_verde("Não foi possível completar esta ação, com esse valor, a sua conta ultrapassaria o limite negativo da sua conta")
+                    print_vermelho("Não foi possível completar esta ação, com esse valor, a sua conta ultrapassaria o limite negativo da sua conta")
                     print("")
                           
             escrever(dados)
-                
-                
+                   
     
         except ValueError:
                 print("")      
-                print_verde("Tipo de saldo inválido, tente novamente apenas com números.")    # caso o valor esteja digitado incorretamente, o programa retorna para o usuário o erro e pede para que ele coloque novamente
+                print_vermelho("Tipo de saldo inválido, tente novamente apenas com números.")    # caso o valor esteja digitado incorretamente, o programa retorna para o usuário o erro e pede para que ele coloque novamente
                 print("")
     else:
         print("")
-        print("Não foi possível encontrar o CNPJ. ")
+        print_vermelho("Não foi possível encontrar o CNPJ. ")
         print("")
         
 
 def deposito():
     dados = ler() # este comando segue a mesma logica da função débito, o programa lê o dicionario, passa para o python que faz as mudanças necessárias e logo após disso, o reescreve novamente em formato .json
-
+    estilo_azul = Style.RESET_ALL + Fore.CYAN + Style.BRIGHT
+    estilo_branco = Style.RESET_ALL + Fore.LIGHTWHITE_EX
+    
     print("")
-    cnpj = input("Digite o seu CNPJ: ")
+    cnpj = input(estilo_azul + "Digite o seu CNPJ: " + estilo_branco)
     print("")
     if cnpj in dados:            
         try:
-            valor = float(input("Digite o valor que será depositado: "))  # pede ao usuário o valor que será debitado
+            valor = float(input(estilo_azul + "Digite o valor que será depositado: " + estilo_branco))  # pede ao usuário o valor que será debitado
             dados[cnpj]["saldo"] += valor
             historico = data_atual()
             lista = ["Deposito", valor, dados[cnpj]["saldo"], historico]
@@ -246,23 +252,24 @@ def deposito():
             
             escrever(dados)
 
-            print("Valor depositado com sucesso, o seu saldo atual é de:", dados[cnpj]["saldo"])
+            print_verde(f"Valor depositado com sucesso, o seu saldo atual é de: {dados[cnpj]['saldo']}")
         except ValueError:      
-                print("Tipo de saldo inválido, tente novamente apenas com números.")    # caso o valor esteja digitado incorretamente, o programa retorna para o usuário o erro e pede para que ele coloque novamente
+                print_vermelho("Tipo de saldo inválido, tente novamente apenas com números.")    # caso o valor esteja digitado incorretamente, o programa retorna para o usuário o erro e pede para que ele coloque novamente
     else:
         print("")
-        print_verde("Não foi possível encontrar o CNPJ. ")
+        print_vermelho("Não foi possível encontrar o CNPJ. ")
         print("")
 
 
 def transferencia_entre_contas():
-    
     dados = ler()
+    estilo_azul = Style.RESET_ALL + Fore.CYAN + Style.BRIGHT
+    estilo_branco = Style.RESET_ALL + Fore.LIGHTWHITE_EX
 
-    cnpj = input("Digite o seu CNPJ: ")
+    cnpj = input(estilo_azul + "Digite o seu CNPJ: " + estilo_branco)
     if validar(cnpj) == True:   # o programa valida o cnpj e a senha do usuário, e caso estejam corretos, permitem continuar a função
-        destino = input("Digite o cnpj do destinatário: ")
-        valor = float(input("Digite o valor da transfêrencia: "))
+        destino = input(estilo_azul + "Digite o cnpj do destinatário: " + estilo_branco)
+        valor = float(input(estilo_azul + "Digite o valor da transfêrencia: " + estilo_branco))
         if valor < dados[cnpj]["saldo"]:
             dados[cnpj]["saldo"] -= valor     # o valor é debitado da conta do remetente e adicionado à conta do destinatário, e a transação fica salva no extrato dos dois clientes envolvidos na transferência
             dados[destino]["saldo"] += valor
@@ -274,15 +281,16 @@ def transferencia_entre_contas():
             escrever(dados)
         else:
             print("")
-            print_verde("Você não tem o saldo suficiente para essa transação.")
+            print_vermelho("Você não tem o saldo suficiente para essa transação.")
             print("")
         
 
 def extrato():
-
     dados = ler()
+    estilo_azul = Style.RESET_ALL + Fore.CYAN + Style.BRIGHT
+    estilo_branco = Style.RESET_ALL + Fore.LIGHTWHITE_EX
 
-    cnpj = input("Digite o seu CNPJ: ")
+    cnpj = input(estilo_azul + "Digite o seu CNPJ: " + estilo_branco)
     if cnpj in dados:
         for transacoes in dados[cnpj]["transacoes"]:
             if len(transacoes) == 5 :

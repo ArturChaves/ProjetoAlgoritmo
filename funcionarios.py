@@ -1,4 +1,4 @@
-from funcoes import ler, escrever, validar, data_atual, print_verde, input_verde, print_vermelho, verificar_cnpj, verificar_cpf, print_azul
+from funcoes import ler, escrever, validar, data_atual, print_verde, print_vermelho, verificar_cnpj, verificar_cpf, print_azul
 from colorama import Fore, Style, init
 init(autoreset=True)
 import json

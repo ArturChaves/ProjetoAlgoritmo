@@ -6,12 +6,12 @@ init(autoreset=True)
 
 login()
 
-estilo_azul = Style.RESET_ALL + Fore.LIGHTRED_EX + Style.BRIGHT
-estilo_branco = Style.RESET_ALL + Fore.CYAN + Style.BRIGHT
+estilo_azul = Style.RESET_ALL + Fore.CYAN + Style.BRIGHT
+estilo_branco = Style.RESET_ALL + Fore.LIGHTWHITE_EX
 
 while(True):
     operacao = input( estilo_azul + """
-================================================= """ +  estilo_branco +"""
+================================================= 
 
     Escolha a operação desejada:                
                                                    
@@ -24,34 +24,43 @@ while(True):
     7. Transfêrencia entre contas                     
     8. Gerenciar Funcionários                             
     9. Sair                                          
-""" + estilo_azul + """                                                    
+                                                  
 =================================================
-    """)
+    """ + estilo_branco)
     
     if operacao == "1":
-        print("Operação escolhida: 1. Novo cliente")
+        print()
+        print(estilo_azul + "Operação escolhida: 1. Novo cliente")
         novo_cliente()
     elif operacao == "2":
-        print("Operação escolhida: 2. Apaga cliente")
+        print()
+        print(estilo_azul + "Operação escolhida: 2. Apaga cliente")
         apaga_cliente()
     elif operacao == "3":
-        print("Operação escolhida: 3. Listar clientes")
+        print()
+        print(estilo_azul + "Operação escolhida: 3. Listar clientes")
         listar_clientes()
     elif operacao == "4":
-        print("Operação escolhida: 4. Débito")
+        print()
+        print(estilo_azul + "Operação escolhida: 4. Débito")
         debito()
     elif operacao == "5":
-        print("Operação escolhida: 5. Depósito")
+        print()
+        print(estilo_azul + "Operação escolhida: 5. Depósito")
         deposito()
     elif operacao == "6":
-        print("Operação escolhida: 6. Extrato")
+        print()
+        print(estilo_azul + "Operação escolhida: 6. Extrato")
         extrato()
     elif operacao == "7":
-        print("Operação escolhida: 7. Transfêrencia entre contas")
+        print()
+        print(estilo_azul + "Operação escolhida: 7. Transfêrencia entre contas")
         transferencia_entre_contas()
     elif operacao == "8":
-        print("Operação escolhida: 8. Gerenciar Funcionários")
+        print()
+        print(estilo_azul + "Operação escolhida: 8. Gerenciar Funcionários")
         menu_funcionarios()
     elif operacao == "9":
-        print("Operação escolhida: 9. Sair ")
+        print()
+        print(estilo_azul + "Operação escolhida: 9. Sair ")
         break
