@@ -128,7 +128,7 @@ def listar_funcionarios():
         funcionarios = dados[cnpj]["funcionarios"]
         print_verde("="*40)
         print()
-        print_azul(Style.BRIGHT + "Clientes:")
+        print_azul(Style.BRIGHT + "Funcionários:")
         print()
         for cpf, dados_funcionario in funcionarios.items():
             print_azul("="*40)
