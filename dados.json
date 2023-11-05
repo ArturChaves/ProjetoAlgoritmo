@@ -1,71 +1,170 @@
 {
     "123": {
         "razao_social": "Giovanni Antonio Moreira",
-        "saldo": 4279.0,
+        "saldo": 45100.0,
         "tipo_conta": "Plus",
         "senha": "123456",
-        "transacoes": [],
+        "transacoes": [
+            [
+                "Transferencia",
+                -900.0,
+                99100.0,
+                "05/11/2023 01:29:26"
+            ],
+            [
+                "Transferencia",
+                -900.0,
+                98200.0,
+                "05/11/2023 01:30:36"
+            ],
+            [
+                "Transferencia",
+                -900.0,
+                97300.0,
+                "05/11/2023 01:31:05"
+            ],
+            [
+                "Transferencia",
+                -2000.0,
+                95300.0,
+                "05/11/2023 01:31:05"
+            ],
+            [
+                "Transferencia",
+                -200.0,
+                95100.0,
+                "05/11/2023 01:31:05"
+            ],
+            [
+                "Transferencia",
+                -50000.0,
+                45100.0,
+                "05/11/2023 01:31:05"
+            ]
+        ],
         "funcionarios": {
             "111": {
                 "nome": "Giovanni",
-                "saldo": 0.0,
+                "saldo": 2700.0,
                 "salario": 900.0,
-                "transacoes": []
+                "transacoes": [
+                    [
+                        "Transferencia",
+                        900.0,
+                        900.0,
+                        "05/11/2023 01:29:26"
+                    ],
+                    [
+                        "Transferencia",
+                        900.0,
+                        1800.0,
+                        "05/11/2023 01:30:36"
+                    ],
+                    [
+                        "Transferencia",
+                        900.0,
+                        2700.0,
+                        "05/11/2023 01:31:05"
+                    ]
+                ]
             },
             "222": {
                 "nome": "Sla",
-                "saldo": null,
+                "saldo": 2000.0,
                 "salario": 2000.0,
-                "transacoes": []
+                "transacoes": [
+                    [
+                        "Transferencia",
+                        2000.0,
+                        2000.0,
+                        "05/11/2023 01:31:05"
+                    ]
+                ]
             },
             "333": {
                 "nome": "Sim",
-                "saldo": null,
+                "saldo": 200.0,
                 "salario": 200.0,
-                "transacoes": []
+                "transacoes": [
+                    [
+                        "Transferencia",
+                        200.0,
+                        200.0,
+                        "05/11/2023 01:31:05"
+                    ]
+                ]
             },
             "666": {
                 "nome": "Sophia Apelona",
-                "saldo": null,
+                "saldo": 50000.0,
                 "salario": 50000.0,
-                "transacoes": []
+                "transacoes": [
+                    [
+                        "Transferencia",
+                        50000.0,
+                        50000.0,
+                        "05/11/2023 01:31:05"
+                    ]
+                ]
             }
         }
     },
     "321": {
-        "razao_social": "Artur Chaves Paiva",
-        "saldo": 4150.0,
-        "tipo_conta": "Plus",
-        "senha": "654321",
-        "transacoes": []
-    },
-    "12345678901234": {
-        "razao_social": "Jesus",
-        "saldo": 20365.0,
+        "razao_social": "Artur Chaves Microsoft Paiva",
+        "saldo": 495000.0,
         "tipo_conta": "Plus",
         "senha": "123456",
-        "transacoes": []
+        "transacoes": [
+            [
+                "Transferencia",
+                -5000.0,
+                495000.0,
+                "05/11/2023 01:46:49"
+            ]
+        ],
+        "funcionarios": {
+            "999": {
+                "nome": "Paivinha",
+                "saldo": 5000.0,
+                "salario": 5000.0,
+                "transacoes": [
+                    [
+                        "Transferencia",
+                        5000.0,
+                        5000.0,
+                        "05/11/2023 01:46:49"
+                    ]
+                ]
+            }
+        }
     },
-    "456": {
-        "razao_social": "atchim",
-        "saldo": 1000.0,
-        "tipo_conta": "Comum",
-        "senha": "654321",
-        "transacoes": []
-    },
-    "122": {
-        "razao_social": "fodase",
-        "saldo": 1000.0,
+    "333": {
+        "razao_social": "Vicente",
+        "saldo": 45000.0,
         "tipo_conta": "Plus",
         "senha": "123456",
-        "transacoes": []
-    },
-    "222": {
-        "razao_social": "sim",
-        "saldo": 1000.0,
-        "tipo_conta": "Plus",
-        "senha": "123456",
-        "transacoes": [],
-        "funcionarios": {}
+        "transacoes": [
+            [
+                "Transferencia",
+                -5000.0,
+                45000.0,
+                "05/11/2023 01:49:40"
+            ]
+        ],
+        "funcionarios": {
+            "500": {
+                "nome": "Artur",
+                "saldo": 5000.0,
+                "salario": 5000.0,
+                "transacoes": [
+                    [
+                        "Transferencia",
+                        5000.0,
+                        5000.0,
+                        "05/11/2023 01:49:40"
+                    ]
+                ]
+            }
+        }
     }
 }

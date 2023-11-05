@@ -38,7 +38,7 @@ def menu_funcionarios():
                             if operacao == "4":
                                 alterar_salario()
                             if operacao == "5":
-                                print("Operação 4 selecionada.")
+                                menu_pagamento()
                             if operacao == "6":
                                 break  # Sair do loop interno
                         break  # Sair do loop externo
@@ -77,7 +77,7 @@ def cadastro_funcionario(cnpj):
 
     nome = input("Nome: ")
 
-    saldo = None
+    saldo = 0
             
     while(True):
         try:
@@ -156,11 +156,79 @@ def alterar_salario():
                 funcionarios[cpf]["salario"] = novo_salario
                 escrever(dados)
                 print_verde("Salário alterado com sucesso")
+                break
 
             except ValueError:
                 print_vermelho("Valor invalido de salario, tente novamente.")
         else:
             print_vermelho("Funcionario não encontrado, favor tentar novamente")
-def pagar_funcionarios():
+def menu_pagamento():
     estilo = Fore.LIGHTBLUE_EX + Style.BRIGHT
     dados = ler()
+    
+    cnpj = input(estilo + "Digite o CNPJ: ")
+    if validar(cnpj) == True:
+        while(True):
+            operacao_pagamento = input(Fore.LIGHTBLUE_EX + Style.BRIGHT + """
+
+=================================================
+    Informe a operação:                
+                                                                                    
+    1. Pagar funcionarios                                  
+    2. Agendar pagamentos
+    3. Extrato dos pagamentos
+    4. Sair
+                                     
+=================================================
+
+""")
+            if operacao_pagamento == "1":
+                pagar_funcionarios(cnpj)
+            if operacao_pagamento == "1":
+                print()
+            if operacao_pagamento == "1":
+                print()
+            if operacao_pagamento == "4":
+                break
+    else:
+        print("")
+        print_vermelho("Usuário não cadastrado, tente novamente.")
+
+def pagar_funcionarios(cnpj):
+    dados = ler()
+    funcionarios = dados[cnpj]["funcionarios"] 
+    pagamento_total = 0
+
+    for salario in funcionarios.values():
+        pagamento_total += salario["salario"]
+
+    if dados[cnpj]["tipo_conta"] == "Plus":
+        saldo_pagador = dados[cnpj]["saldo"] + 5000
+        if saldo_pagador > pagamento_total:
+            pagar(cnpj)
+            print_azul("Pagamento realizado com sucesso")
+        else:
+            print_vermelho("Não é possivel realziar pagamento. O valor ultrapassa seu saldo")
+ 
+    elif dados[cnpj]["tipo_conta"] == "Comum":
+        saldo_pagador = dados[cnpj]["saldo"] + 1000
+        if saldo_pagador > pagamento_total:
+            pagar()
+            print_azul("Pagamento realizado com sucesso")
+        else:
+            print_vermelho("Não é possivel realziar pagamento. O valor ultrapassa seu saldo")
+        
+def pagar(cnpj):
+    dados = ler()
+    funcionarios = dados[cnpj]["funcionarios"]
+    for salario in funcionarios.values():
+        dados[cnpj]["saldo"] -= salario["salario"]
+        salario["saldo"] += salario["salario"]
+        historico = data_atual()
+        lista = ["Transferencia", -salario["salario"], dados[cnpj]["saldo"], historico]
+        lista_destino = ["Transferencia", salario["salario"], salario["saldo"], historico]
+        dados[cnpj]["transacoes"].append(lista)
+        salario["transacoes"].append(lista_destino)
+        escrever(dados)
+
+

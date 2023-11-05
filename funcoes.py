@@ -89,7 +89,7 @@ def novo_cliente():
 
     while(True):
         try:
-            saldo = float(input_verde("Informe o saldo inicial de sua conta: "))
+            saldo = float(input(Style.RESET_ALL + Fore.LIGHTBLUE_EX + Style.BRIGHT +"Informe o saldo inicial de sua conta: "))
             break
         except ValueError:
             print_vermelho("Valor inválido, tente novamente!")
