@@ -6,17 +6,21 @@ from colorama import Fore, Style
 def validar(cnpj):
     tentativa = 0
     dados = ler()
+    estilo_azul = Fore.LIGHTBLUE_EX + Style.BRIGHT
+    estilo_branco = Fore.LIGHTWHITE_EX + Style.BRIGHT
+    fim_estilo = Style.RESET_ALL
+
     while(True):
         if str(cnpj) in dados:  # Verifica se o CNPJ está no dicionário
-            senha = input("Digite sua senha: ")
+            senha = input(estilo_azul + "Digite sua senha: " + fim_estilo + estilo_branco)
             if senha == dados[str(cnpj)]["senha"]:  # Verifica se a senha corresponde ao CNPJ
                 return True
             tentativa += 1
             if tentativa == 3:  # caso o user erre a senha 3 vezes, o programa precisará reiniciar
                 print("Reinicie o programa e tente novamente.")
                 break
-        else:
-            return False
+            else:
+                return False
         
 def verificar_cpf(cpf, cnpj):
     tentativa = 0
@@ -28,33 +32,38 @@ def verificar_cpf(cpf, cnpj):
             return False
 
 def login():
-    estilo = Fore.LIGHTBLUE_EX + Style.BRIGHT
+    estilo_azul = Style.RESET_ALL + Fore.CYAN + Style.BRIGHT
+    estilo_branco = Style.RESET_ALL + Fore.LIGHTWHITE_EX
+
     while(True):
-        login = input(Fore.LIGHTBLUE_EX + Style.BRIGHT +"""
-                                                   
-===================================================
-        Bem vindo ao Banco QuemPoupaTem PJ         
-===================================================
-    1. Login                                       
-    2. Registrar                                   
-                                                   
-    Escolha a operação desejada:                   
-===================================================
+        login = input(estilo_azul + """                                                
+ _________________________________________________ 
+|                                                 |
+|       Bem vindo ao Banco QuemPoupaTem PJ        |
+|_________________________________________________|
+|                                                 |
+|    1. Login                                     | 
+|    2. Registrar                                 | 
+|                                                 | 
+|    Escolha a operação desejada:                 | 
+|_________________________________________________|
                                                    
  """)
-    
-        if login == '1':
-            print("")
-            cnpj = int(input(estilo + "Digite o seu CNPJ: "))
-            if validar(cnpj) == True:   # faz a validação por meio da função e permite o login do user
-                break
-            else:
+        try:
+            if login == '1':
                 print("")
-                print("Usuário não cadastrado, tente novamente.")
+                cnpj = int(input(estilo_azul + "Digite o seu CNPJ: "))
+                if validar(cnpj) == True:   # faz a validação por meio da função e permite o login do user
+                    break
+                else:
+                    print("")
+                    print("Usuário não cadastrado, tente novamente.")
             
-        if login == '2':
-            novo_cliente()
-            break
+            if login == '2':
+                novo_cliente()
+                break
+        except ValueError:
+            print_vermelho("CNPJ digitado incorretamente, tente novamente!")
             
 
 
@@ -159,7 +168,9 @@ def debito():
     
     cnpj = input("  Digite o seu CNPJ: ")
     
-    if cnpj in dados:            
+    if cnpj in dados:
+        estilo = Fore.LIGHTGREEN_EX + Style.BRIGHT
+        fim_estilo = Style.RESET_ALL         
         try:
             valor = float(input("Digite o valor que será debitado: "))  # Pede ao usuário o valor que será debitado
             if dados[cnpj]["tipo_conta"] == "Plus":
@@ -171,7 +182,7 @@ def debito():
                     lista = ["Debito", valor, dados[cnpj]["saldo"],historico, tarifa]
                     dados[cnpj]["transacoes"].append(lista) # esse .append(lista) serve para adicionar as transações na conta do user, e será usado para fazer o extrato
                     print("")
-                    print_verde("Valor debitado com sucesso, o seu saldo atual é de: R$", dados[cnpj]["saldo"])
+                    print(estilo + "Valor debitado com sucesso, o seu saldo atual é de: " + fim_estilo + "R$", dados[cnpj]["saldo"])
                     print("")
                 else:
                     print("")
@@ -321,3 +332,11 @@ def input_verde(texto):
     
 def print_vermelho(texto):
     print(Style.RESET_ALL + Fore.RED + Style.BRIGHT + texto)
+    
+def estilos():
+    estilo_verde = Fore.LIGHTGREEN_EX + Style.BRIGHT
+    fim_estilo = Style.RESET_ALL
+    estilo_azul = Fore.LIGHTBLUE_EX + Style.BRIGHT
+    estilo_vermelho = Fore.RED + Style.BRIGHT
+
+    return estilo_verde, estilo_azul, estilo_vermelho, fim_estilo

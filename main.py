@@ -6,9 +6,13 @@ init(autoreset=True)
 
 login()
 
+estilo_azul = Style.RESET_ALL + Fore.LIGHTRED_EX + Style.BRIGHT
+estilo_branco = Style.RESET_ALL + Fore.CYAN + Style.BRIGHT
+
 while(True):
-    operacao = input(Fore.LIGHTBLUE_EX + Style.BRIGHT + """
-=================================================
+    operacao = input( estilo_azul + """
+================================================= """ +  estilo_branco +"""
+
     Escolha a operação desejada:                
                                                    
     1. Novo cliente                                  
@@ -20,7 +24,7 @@ while(True):
     7. Transfêrencia entre contas                     
     8. Gerenciar Funcionários                             
     9. Sair                                          
-                                                     
+""" + estilo_azul + """                                                    
 =================================================
     """)
     
