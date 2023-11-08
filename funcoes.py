@@ -7,7 +7,7 @@ def ler(): # essa função é a responsável por sempre ler o arquivo .JSON
         dados = json.load(arquivo_json)
         return dados
 
-def escrever(dados): # essa função é responsável por sempre escrever o que foi alterado no python no arquivo .JSON
+def escrever(dados): # essa função é responsável por sempre escrever no arquivo .JSON o que foi alterado no python 
     with open("dados.json", "w") as arquivo_json:
         json.dump(dados, arquivo_json, indent=4)
         
@@ -107,9 +107,9 @@ def novo_cliente():
 
     razao_social = input(estilo_azul + "Razão social: " + estilo_branco)
 
-    while(True):
+    while(True): # para evitar erros no console, usamos o try para fazer tentativas e caso dê algum erro de digitação por parte do usuario, ao invés de quebrar o programa, ele apenas reinicia informando ao user que o que ele digitou está incorreto
         try:
-            saldo = float(input(estilo_azul +"Informe o saldo inicial de sua conta: " + estilo_branco))
+            saldo = float(input(estilo_azul +"Informe o saldo inicial de sua conta: " + estilo_branco)) 
             break
         except ValueError:
             print_vermelho("Valor inválido, tente novamente!")
@@ -191,11 +191,11 @@ def debito():
             valor = float(input("Digite o valor que será debitado: "))  # pede ao usuário o valor que será debitado
             if dados[cnpj]["tipo_conta"] == "Plus":
                 saldo_atual = dados[cnpj]["saldo"] - valor
-                if saldo_atual >= -5000:
-                    tarifa, valor = tarifar(valor, dados, cnpj)      
-                    dados[cnpj]["saldo"] -= valor
+                if saldo_atual >= -5000: # esse if verifica se o dono da conta possui uma divida maior que o permitido, neste caso, o da conta plus que permite o user se dividar em no máximo 5000 reais
+                    tarifa, valor = tarifar(valor, dados, cnpj)    # usa da funcao tarifar para gerar as taxas sobre os debitos
+                    dados[cnpj]["saldo"] -= valor  # subtrai o valor do debito da conta, com valores já atualizados pós-tarifação
                     historico = data_atual()
-                    lista = ["Debito", valor, dados[cnpj]["saldo"],historico, tarifa]
+                    lista = ["Debito", valor, dados[cnpj]["saldo"],historico, tarifa] # aqui se cria uma lista para adicionar ao dicionario do cnpj do usuario, e essa lista basicamente consiste em salvar as operações que o cliente fez
                     dados[cnpj]["transacoes"].append(lista) # esse .append(lista) serve para adicionar as transações na conta do user, e será usado para fazer o extrato
                     print("")
                     print_verde(f'Valor debitado com sucesso, o seu saldo atual é de: R$ {dados[cnpj]["saldo"]}')
@@ -205,7 +205,7 @@ def debito():
                     print_vermelho("Não foi possível completar esta ação, com esse valor, a sua conta ultrapassaria o limite negativo da sua conta")
                     print("")
                     
-            elif dados[cnpj]["tipo_conta"] == "Comum":
+            elif dados[cnpj]["tipo_conta"] == "Comum":  # mesma logica do item anterior, mas ao invés de ser para as contas plus, agora será para a conta comum
                 saldo_atual = dados[cnpj]["saldo"] - valor
                 if saldo_atual >= -1000:
                     tarifa, valor = tarifar(valor, dados, cnpj)      
@@ -244,7 +244,7 @@ def deposito():
     print("")
     if cnpj in dados:            
         try:
-            valor = float(input(estilo_azul + "Digite o valor que será depositado: " + estilo_branco))  # pede ao usuário o valor que será debitado
+            valor = float(input(estilo_azul + "Digite o valor que será depositado: " + estilo_branco))  # pede ao usuário o valor que será depositado
             dados[cnpj]["saldo"] += valor
             historico = data_atual()
             lista = ["Deposito", valor, dados[cnpj]["saldo"], historico]

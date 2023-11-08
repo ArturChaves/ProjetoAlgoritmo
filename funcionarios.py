@@ -1,6 +1,6 @@
 from funcoes import ler, escrever, validar, data_atual, print_verde, print_vermelho, verificar_cnpj, verificar_cpf, print_azul
 from colorama import Fore, Style, init
-init(autoreset=True)
+init(autoreset=True) # esse comando é para iniciar o colorama, que permite alterar o estilo das letras
 import json
 
 def menu_funcionarios():
@@ -71,7 +71,7 @@ def cadastro_funcionario(cnpj):
             cpf = int(input(estilo_azul + "CPF: " + estilo_branco))
             cpf = str(cpf)
             validacao_cpf = True
-            if len(cpf) == 3:      # aqui faz a comparação para saber o tamanho do cpf, caso seja 14, está liberado para continuar as proximas etapas
+            if len(cpf) == 11:      # aqui faz a comparação para saber o tamanho do cpf, caso seja 11, o cliente estará liberado para continuar as proximas etapas
                 for contas in dados.keys():
                     if cpf in contas:
                         validacao_cpf = False
@@ -105,7 +105,7 @@ def cadastro_funcionario(cnpj):
             "saldo" : saldo,
             "salario": salario,
             "pagamentos": [],
-        }       # esse é o modelo do dicionario que consta no arquivo .json
+        }       # esse é o modelo do dicionario que consta no arquivo .json para o cadastro dos funcionários
         
     escrever(dados) # com esse comando, esse dicionario é escrito no json dessa maneira
     print()
@@ -145,8 +145,8 @@ def listar_funcionarios():
         print_azul("="*40)
         print()
         print_azul(Style.BRIGHT + "Funcionários:")
-        print()
-        for cpf, dados_funcionario in funcionarios.items():
+        print() 
+        for cpf, dados_funcionario in funcionarios.items(): # faz a iteração sobre os dados dos funcionários
             print_azul("="*40)
             print()
             print(f'{estilo_azul} Nome: {estilo_branco}{dados_funcionario["nome"]}')
@@ -163,20 +163,20 @@ def alterar_salario():
     estilo_azul = Style.RESET_ALL + Fore.CYAN + Style.BRIGHT
     estilo_branco = Style.RESET_ALL + Fore.LIGHTWHITE_EX
     dados = ler()
-    cnpj = listar_funcionarios()
+    cnpj = listar_funcionarios()  # os funcionarios sao listados para um acesso mais e facil e rapido dos dados
     funcionarios = dados[cnpj]["funcionarios"]
     while(True):
         cpf = input(estilo_azul + "Informe o cpf do colaborador para alterar seu salário: " + estilo_branco)
         if cpf in funcionarios.keys():
             try:
                 novo_salario = float(input(estilo_azul + "Informe o novo salário do colaborador: " + estilo_branco))
-                funcionarios[cpf]["salario"] = novo_salario
+                funcionarios[cpf]["salario"] = novo_salario 
                 escrever(dados)
                 print_verde("Salário alterado com sucesso")
                 break
 
             except ValueError:
-                print_vermelho("Valor invalido de salario, tente novamente.")
+                print_vermelho("Valor invalido de salario, tente novamente.") 
         else:
             print_vermelho("Funcionario não encontrado, favor tentar novamente")
             
