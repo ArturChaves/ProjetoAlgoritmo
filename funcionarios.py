@@ -1,14 +1,14 @@
 from funcoes import ler, escrever, validar, data_atual, print_verde, print_vermelho, verificar_cnpj, verificar_cpf, print_azul
 from colorama import Fore, Style, init
 init(autoreset=True) # esse comando é para iniciar o colorama, que permite alterar o estilo das letras
-import json
+import json # biblioteca utilizada para armazenar os dados 
 
-def menu_funcionarios():
+def menu_funcionarios(): #incializa o menu funcionarios setando suas cores e condicionando suas respostas
     dados = ler()
-    estilo_azul = Style.RESET_ALL + Fore.CYAN + Style.BRIGHT
-    estilo_branco = Style.RESET_ALL + Fore.LIGHTWHITE_EX
+    estilo_azul = Style.RESET_ALL + Fore.CYAN + Style.BRIGHT # Setando estilos das cores 
+    estilo_branco = Style.RESET_ALL + Fore.LIGHTWHITE_EX # Setando estilo da digitação no terminal
     while True:
-        try:
+        try: # Validação do CNPJ para acessar o menu
             print("")
             cnpj = int(input(estilo_azul + "CNPJ: " + estilo_branco))
             cnpj = str(cnpj)
@@ -64,8 +64,8 @@ def menu_funcionarios():
 
 def cadastro_funcionario(cnpj):
     dados = ler()
-    estilo_azul = Style.RESET_ALL + Fore.CYAN + Style.BRIGHT
-    estilo_branco = Style.RESET_ALL + Fore.LIGHTWHITE_EX
+    estilo_azul = Style.RESET_ALL + Fore.CYAN + Style.BRIGHT # Setando estilos das cores
+    estilo_branco = Style.RESET_ALL + Fore.LIGHTWHITE_EX # Setando estilo da digitação no terminal
     while(True):
         try:
             print("")
@@ -94,7 +94,7 @@ def cadastro_funcionario(cnpj):
 
     saldo = 0
             
-    while(True):
+    while(True): #Loop feito para cadastrar um salário valido 
         try:
             salario = float(input(f"{estilo_azul}Informe o salário de {nome}: {estilo_branco} "))
             break
@@ -120,11 +120,11 @@ def apaga_funcionario():
     cnpj = int(input(estilo_azul + "CNPJ: " + estilo_branco))
     cnpj = str(cnpj)
     
-    if verificar_cnpj(cnpj):
+    if verificar_cnpj(cnpj): #Caso o CNPJ for valido, então o programa pergunta o CPF do funcionário no qual será removido
         cpf = int(input(estilo_azul + "CPF: " + estilo_branco))
         cpf = str(cpf)
         
-        if verificar_cpf(cpf, cnpj):
+        if verificar_cpf(cpf, cnpj): #Se a verificação for verdadeira, então o funcionário é deletado
             del dados[cnpj]["funcionarios"][cpf]
             escrever(dados)
             print()
@@ -220,47 +220,47 @@ def menu_pagamento():
 def pagar_funcionarios(cnpj):
     dados = ler()
     funcionarios = dados[cnpj]["funcionarios"] 
-    pagamento_total = 0
+    pagamento_total = 0 #Inicializa uma variavel com a finalidade de contar o valor total do pagamento dos funcionários
 
     for salario in funcionarios.values():
-        pagamento_total += salario["salario"]
+        pagamento_total += salario["salario"] #Conatabiliza os salários do cnpj dentro de pagamento total
 
-    if dados[cnpj]["tipo_conta"] == "Plus":
-        saldo_pagador = dados[cnpj]["saldo"] + 5000
+    if dados[cnpj]["tipo_conta"] == "Plus": #Verifica o tipo de conta do CNPJ para identificar seu limite de crédito
+        saldo_pagador = dados[cnpj]["saldo"] + 5000 #O saldo total do CNPJ é somado com seu limite de crédito caso seja necessário utilizar do crédito para realizar o pagamento
         if saldo_pagador > pagamento_total:
             pagar(cnpj)
             print_azul("Pagamento realizado com sucesso")
-        else:
+        else: #Se o valor ultrapassar o saldo limite do pagador, não é possivel realizar o pagamento
             print_vermelho("Não é possivel realziar pagamento. O valor ultrapassa seu saldo")
  
-    elif dados[cnpj]["tipo_conta"] == "Comum":
-        saldo_pagador = dados[cnpj]["saldo"] + 1000
+    elif dados[cnpj]["tipo_conta"] == "Comum": #Verifica o tipo de conta do CNPJ para identificar seu limite de crédito
+        saldo_pagador = dados[cnpj]["saldo"] + 1000 #O saldo total do CNPJ é somado com seu limite de crédito caso seja necessário utilizar do crédito para realizar o pagamento
         if saldo_pagador > pagamento_total:
             pagar()
             print_azul("Pagamento realizado com sucesso")
-        else:
+        else: #Se o valor ultrapassar o saldo limite do pagador, não é possivel realizar o pagamento
             print_vermelho("Não é possivel realziar pagamento. O valor ultrapassa seu saldo")
         
 def pagar(cnpj):
     dados = ler()
-    funcionarios = dados[cnpj]["funcionarios"]
-    for salario in funcionarios.values():
-        dados[cnpj]["saldo"] -= salario["salario"]
-        salario["saldo"] += salario["salario"]
+    funcionarios = dados[cnpj]["funcionarios"] #Seta uma variavel para melhor manipulção dos dados
+    for salario in funcionarios.values(): #Verifica o salário de cada funcionário 
+        dados[cnpj]["saldo"] -= salario["salario"] #O valor do salário é feito por um débito no CNPJ 
+        salario["saldo"] += salario["salario"] #O saldo recebe o valor debitado do CNPJ 
         historico = data_atual()
-        lista = ["Pagamento", -salario["salario"], dados[cnpj]["saldo"], historico]
-        lista_destino = ["Recebimento", salario["salario"], salario["saldo"], historico]
-        dados[cnpj]["transacoes"].append(lista)
-        salario["pagamentos"].append(lista_destino)
-        escrever(dados)
+        lista = ["Pagamento", -salario["salario"], dados[cnpj]["saldo"], historico] #Estruturando os dados do cnpj para serem devolvidos em "dados.json" após alteração
+        lista_destino = ["Recebimento", salario["salario"], salario["saldo"], historico] #Estruturando os dados do funcionário para serem devolvidos em "dados.json" após alteração
+        dados[cnpj]["transacoes"].append(lista) 
+        salario["pagamentos"].append(lista_destino) 
+        escrever(dados) # Devolve esses valores escrevendo os mesmos dentro do nosso arquivo JSON
 
 def extrato_pagamentos(cnpj):
     estilo_azul = Style.RESET_ALL + Fore.CYAN + Style.BRIGHT
     estilo_branco = Style.RESET_ALL + Fore.LIGHTWHITE_EX
     dados = ler()
-    funcionarios = dados[cnpj]["funcionarios"]
+    funcionarios = dados[cnpj]["funcionarios"] #Seta uma variavel para melhor manipulção dos dados
     
-    for funcionario_cpf, funcionario in funcionarios.items():
+    for funcionario_cpf, funcionario in funcionarios.items(): #Um laço é feito para verificar o conteudo de cada funcionário cadastrado
         print(f"{estilo_azul}Extrato de pagamentos para o  {funcionario['nome']} - {funcionario_cpf}: {estilo_branco}")
         for pagamento in funcionario["pagamentos"]:
             tipo, valor, saldo, data = pagamento
