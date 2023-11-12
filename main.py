@@ -11,21 +11,22 @@ estilo_branco = Style.RESET_ALL + Fore.LIGHTWHITE_EX
 
 while(True):
     operacao = input( estilo_azul + """
-================================================= 
+ _________________________________________________
+|                                                 |
+|   Escolha a operação desejada:                  |
+|_________________________________________________| 
+|                                                 | 
+|    1. Novo cliente                              |   
+|    2. Apaga cliente                             |  
+|    3. Listar clientes                           |    
+|    4. Débito                                    |     
+|    5. Depósito                                  |     
+|    6. Extrato                                   |    
+|    7. Transfêrencia entre contas                |    
+|    8. Gerenciar Funcionários                    |        
+|    9. Sair                                      |   
+|_________________________________________________|                                                  
 
-    Escolha a operação desejada:                
-                                                   
-    1. Novo cliente                                  
-    2. Apaga cliente                                
-    3. Listar clientes                                
-    4. Débito                                         
-    5. Depósito                                       
-    6. Extrato                                        
-    7. Transfêrencia entre contas                     
-    8. Gerenciar Funcionários                             
-    9. Sair                                          
-                                                  
-=================================================
     """ + estilo_branco)
     
     if operacao == "1":

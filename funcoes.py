@@ -296,12 +296,12 @@ def extrato():
             if len(transacoes) == 5 :
                 tipo, valor, saldo, data, tarifa = transacoes # aqui verifica o tamanho da lista transações e aplica a tarifa quando necessário
                 print("")
-                print_verde(f"Tipo: {tipo} | Valor: R$ {valor} | Tarifa: R$ {tarifa} | Saldo atual: R$ {saldo} | Data: {data}")
+                print(estilo_azul + f"Tipo: {tipo} | Valor: R$ {valor} | Tarifa: R$ {tarifa} | Saldo atual: R$ {saldo} | Data: {data}")
                 print("")
             else:
                 tipo, valor, saldo, data = transacoes # aqui verifica o tamanho da lista, caso não tenha uma tarifa, ele prossegue sem tarifar
                 print("")
-                print_verde(f"Tipo: {tipo} | Valor: R$ {valor} | Saldo atual: R$ {saldo} | Data: {data}")
+                print(estilo_azul + f"Tipo: {tipo} | Valor: R$ {valor} | Saldo atual: R$ {saldo} | Data: {data}")
                 print("")
 
     

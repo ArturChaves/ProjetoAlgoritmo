@@ -12,14 +12,15 @@ def menu_funcionarios():
             print("")
             cnpj = int(input(estilo_azul + "CNPJ: " + estilo_branco))
             cnpj = str(cnpj)
-            if len(cnpj) == 3 and verificar_cnpj(cnpj) == True:
+            if len(cnpj) == 14 and verificar_cnpj(cnpj) == True:
                 for contas in dados.keys():
                     if cnpj in contas:
                         while True:
                             operacao = input(estilo_azul+ """
 
  _______________________________________________
-|   Escolha a operação desejada:                |
+|                                               |
+|    Escolha a operação desejada:               |
 |                                               |                                   
 |    1. Cadastrar funcionário                   |              
 |    2. Remover funcionário                     |
@@ -84,7 +85,7 @@ def cadastro_funcionario(cnpj):
             else:
                 print_vermelho("Valor inválido, tente novamente!")
         except ValueError:
-            print_vermelho("CPF invalido")
+            print_vermelho("CPF inválido")
         
     
         
@@ -95,7 +96,7 @@ def cadastro_funcionario(cnpj):
             
     while(True):
         try:
-            salario = float(input(f"{estilo_azul}Informe o salário de {nome}: {estilo_branco}: "))
+            salario = float(input(f"{estilo_azul}Informe o salário de {nome}: {estilo_branco} "))
             break
         except ValueError:
             print_vermelho("Valor inválido, tente novamente!")
@@ -191,6 +192,7 @@ def menu_pagamento():
             operacao_pagamento = input(estilo_azul + """
 
  _______________________________________________
+|                                               |
 |    Informe a operação:                        |
 |                                               |                                   
 |    1. Pagar funcionarios                      |            
