@@ -190,7 +190,7 @@ def menu_pagamento():
     estilo_azul = Style.RESET_ALL + Fore.CYAN + Style.BRIGHT
     estilo_branco = Style.RESET_ALL + Fore.LIGHTWHITE_EX
     dados = ler()
-    
+   
     cnpj = input(estilo_azul + "Digite o CNPJ: " + estilo_branco)
     if validar(cnpj) == True:
         while(True):
@@ -221,6 +221,7 @@ def menu_pagamento():
     else:
         print("")
         print_vermelho("Usuário não cadastrado, tente novamente.")
+    
 
 def pagar_funcionarios(cnpj):
     dados = ler()
@@ -241,7 +242,7 @@ def pagar_funcionarios(cnpj):
     elif dados[cnpj]["tipo_conta"] == "Comum": #Verifica o tipo de conta do CNPJ para identificar seu limite de crédito
         saldo_pagador = dados[cnpj]["saldo"] + 1000 #O saldo total do CNPJ é somado com seu limite de crédito caso seja necessário utilizar do crédito para realizar o pagamento
         if saldo_pagador > pagamento_total:
-            pagar()
+            pagar(cnpj)
             print_azul("Pagamento realizado com sucesso")
         else: #Se o valor ultrapassar o saldo limite do pagador, não é possivel realizar o pagamento
             print_vermelho("Não é possivel realziar pagamento. O valor ultrapassa seu saldo")

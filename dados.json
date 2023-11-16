@@ -1,29 +1,15 @@
 {
     "12345678901234": {
-        "razao_social": "Adidas",
-        "saldo": 94850.0,
+        "razao_social": "Giovanni",
+        "saldo": 20000.0,
         "tipo_conta": "Plus",
         "senha": "123456",
-        "transacoes": [
-            [
-                "Debito",
-                5150.0,
-                44850.0,
-                "16/11/2023 19:00:25",
-                150.0
-            ],
-            [
-                "Deposito",
-                50000.0,
-                94850.0,
-                "16/11/2023 19:00:57"
-            ]
-        ],
+        "transacoes": [],
         "funcionarios": {
-            "12345678910": {
-                "nome": "Artur Chaves",
+            "12345678900": {
+                "nome": "Isabela",
                 "saldo": 0,
-                "salario": 50000.0,
+                "salario": 2000.0,
                 "pagamentos": []
             }
         }
