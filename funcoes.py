@@ -10,7 +10,7 @@ def ler(): # essa função é a responsável por sempre ler o arquivo .JSON
 def escrever(dados): # essa função é responsável por sempre escrever no arquivo .JSON o que foi alterado no python 
     with open("dados.json", "w") as arquivo_json:
         json.dump(dados, arquivo_json, indent=4)
-        
+
 def validar(cnpj):
     # função para validar CNPJ e senha do usuário
     tentativa = 0
@@ -19,17 +19,20 @@ def validar(cnpj):
     estilo_branco = Fore.LIGHTWHITE_EX + Style.BRIGHT
     fim_estilo = Style.RESET_ALL
 
-    while True:
-        if str(cnpj) in dados:  # verifica se o CNPJ está no dicionário
+    while tentativa < 3:
+        if str(cnpj) in dados: # verifica se o CNPJ está no dicionário
             senha = input(estilo_azul + "Digite sua senha: " + fim_estilo + estilo_branco)
-            if senha == dados[str(cnpj)]["senha"]:  # verifica se a senha corresponde ao CNPJ
-                return True
-            tentativa += 1
-            if tentativa == 3:  # caso o usuário erre a senha 3 vezes, o programa precisa reiniciar
-                print("Reinicie o programa e tente novamente.")
-                break
+            if senha == dados[str(cnpj)]["senha"]: # verifica se a senha corresponde ao CNPJ
+                return True 
             else:
-                return False
+                print_vermelho("Senha incorreta. Tente novamente.")
+                tentativa += 1 # caso o usuário erre a senha 3 vezes, o programa precisa reiniciar
+        else: 
+            break
+
+    print("Reinicie o programa e tente novamente.")
+    return False
+
 
 def verificar_cpf(cpf, cnpj):
     # função para verificar o CPF do funcionário
@@ -62,8 +65,7 @@ def login():
  """)
         try:
             if login == '1':
-                print("")
-                cnpj = int(input(estilo_azul + "Digite o seu CNPJ: " + estilo_branco))
+                cnpj = int(input())
                 if validar(cnpj) == True:  # realiza a validação usando a função e permite o login do usuário
                     break
                 else:

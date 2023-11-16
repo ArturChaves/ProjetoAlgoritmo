@@ -1,10 +1,18 @@
 {
     "12345678901234": {
         "razao_social": "giovanni",
-        "saldo": 1000.0,
+        "saldo": 794.0,
         "tipo_conta": "Plus",
         "senha": "123456",
-        "transacoes": [],
+        "transacoes": [
+            [
+                "Debito",
+                206.0,
+                794.0,
+                "13/11/2023 22:54:20",
+                6.0
+            ]
+        ],
         "funcionarios": {}
     },
     "12341234123412": {
