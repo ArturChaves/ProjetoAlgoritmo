@@ -21,7 +21,7 @@ def validar(cnpj):
 
     while True:
         if str(cnpj) in dados: # verifica se o CNPJ está no dicionário
-            senha = input(estilo_azul + "Digite sua senha: " + fim_estilo + estilo_branco)
+            senha = input(estilo_azul + "Digite sua senha: " + estilo_branco)
             if senha == dados[str(cnpj)]["senha"]: # verifica se a senha corresponde ao CNPJ
                 return True 
             else:
@@ -62,7 +62,7 @@ def login():
  """)
         try:
             if login == '1':
-                cnpj = int(input(estilo_azul + "Digite seu CNPJ" + estilo_branco))
+                cnpj = int(input(estilo_azul + "Digite seu CNPJ: " + estilo_branco))
                 if validar(cnpj) == True:  # realiza a validação usando a função e permite o login do usuário
                     break
                 else:
@@ -183,11 +183,11 @@ def debito():
     estilo_azul = Style.RESET_ALL + Fore.CYAN + Style.BRIGHT
     estilo_branco = Style.RESET_ALL + Fore.LIGHTWHITE_EX
     
-    cnpj = input(estilo_azul + "  Digite o seu CNPJ: ")
+    cnpj = input(estilo_azul + "  Digite o seu CNPJ: " + estilo_branco)
     
-    if cnpj in dados:         
+    if validar(cnpj):         
         try:
-            valor = float(input("Digite o valor que será debitado: "))  # pede ao usuário o valor que será debitado
+            valor = float(input(estilo_azul + "Digite o valor que será debitado: " + estilo_branco))  # pede ao usuário o valor que será debitado
             if dados[cnpj]["tipo_conta"] == "Plus":
                 saldo_atual = dados[cnpj]["saldo"] - valor
                 if saldo_atual >= -5000: # esse if verifica se o dono da conta possui uma divida maior que o permitido, neste caso, o da conta plus que permite o user se dividar em no máximo 5000 reais
@@ -290,7 +290,7 @@ def extrato():
     estilo_branco = Style.RESET_ALL + Fore.LIGHTWHITE_EX
 
     cnpj = input(estilo_azul + "Digite o seu CNPJ: " + estilo_branco)
-    if cnpj in dados:
+    if validar(cnpj):
         for transacoes in dados[cnpj]["transacoes"]:
             if len(transacoes) == 5 :
                 tipo, valor, saldo, data, tarifa = transacoes # aqui verifica o tamanho da lista transações e aplica a tarifa quando necessário
