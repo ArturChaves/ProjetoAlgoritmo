@@ -144,7 +144,7 @@ def apaga_cliente():
 
     dados = ler()  # realiza a leitura do dicionário a partir do arquivo JSON
 
-    if str(cnpj) in dados:
+    if validar(cnpj):
         del dados[str(cnpj)]
 
         escrever(dados)
