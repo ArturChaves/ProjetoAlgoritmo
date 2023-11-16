@@ -140,24 +140,27 @@ def listar_funcionarios():
     estilo_azul = Style.RESET_ALL + Fore.CYAN + Style.BRIGHT
     estilo_branco = Style.RESET_ALL + Fore.LIGHTWHITE_EX
     dados = ler()
-    cnpj = input(estilo_azul + "Informe o CNPJ: " + estilo_branco)
-    if cnpj in dados:
-        funcionarios = dados[cnpj]["funcionarios"]
-        print_azul("="*40)
-        print()
-        print_azul(Style.BRIGHT + "Funcionários:")
-        print() 
-        for cpf, dados_funcionario in funcionarios.items(): # faz a iteração sobre os dados dos funcionários
+    try:
+        cnpj = input(estilo_azul + "Informe o CNPJ: " + estilo_branco)
+        if cnpj in dados:
+            funcionarios = dados[cnpj]["funcionarios"]
             print_azul("="*40)
             print()
-            print(f'{estilo_azul} Nome: {estilo_branco}{dados_funcionario["nome"]}')
-            print(f'{estilo_azul} CPF: {estilo_branco} {cpf}')
-            print(f'{estilo_azul} Saldo: {estilo_branco} {dados_funcionario["saldo"]}')
-            print(f'{estilo_azul} Salário: {estilo_branco} {dados_funcionario["salario"]}')
-            print()
-        return cnpj
-    else:
-        print_vermelho(Style.BRIGHT + "CNPJ invalido, favor inserir novamente")
+            print_azul(Style.BRIGHT + "Funcionários:")
+            print() 
+            for cpf, dados_funcionario in funcionarios.items(): # faz a iteração sobre os dados dos funcionários
+                print_azul("="*40)
+                print()
+                print(f'{estilo_azul} Nome: {estilo_branco}{dados_funcionario["nome"]}')
+                print(f'{estilo_azul} CPF: {estilo_branco} {cpf}')
+                print(f'{estilo_azul} Saldo: {estilo_branco} {dados_funcionario["saldo"]}')
+                print(f'{estilo_azul} Salário: {estilo_branco} {dados_funcionario["salario"]}')
+                print()
+            return cnpj
+        else:
+            print_vermelho(Style.BRIGHT + "CNPJ invalido, favor inserir novamente")
+    except ValueError:
+        print_vermelho("Coloque um valor válido para o CNPJ")
 
 
 def alterar_salario():
@@ -165,6 +168,8 @@ def alterar_salario():
     estilo_branco = Style.RESET_ALL + Fore.LIGHTWHITE_EX
     dados = ler()
     cnpj = listar_funcionarios()  # os funcionarios sao listados para um acesso mais e facil e rapido dos dados
+    if cnpj == None:
+        return
     funcionarios = dados[cnpj]["funcionarios"]
     while(True):
         cpf = input(estilo_azul + "Informe o cpf do colaborador para alterar seu salário: " + estilo_branco)
