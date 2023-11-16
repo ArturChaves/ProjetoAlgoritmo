@@ -19,18 +19,15 @@ def validar(cnpj):
     estilo_branco = Fore.LIGHTWHITE_EX + Style.BRIGHT
     fim_estilo = Style.RESET_ALL
 
-    while tentativa < 3:
+    while True:
         if str(cnpj) in dados: # verifica se o CNPJ está no dicionário
             senha = input(estilo_azul + "Digite sua senha: " + fim_estilo + estilo_branco)
             if senha == dados[str(cnpj)]["senha"]: # verifica se a senha corresponde ao CNPJ
                 return True 
             else:
                 print_vermelho("Senha incorreta. Tente novamente.")
-                tentativa += 1 # caso o usuário erre a senha 3 vezes, o programa precisa reiniciar
         else: 
             break
-
-    print("Reinicie o programa e tente novamente.")
     return False
 
 
@@ -65,7 +62,7 @@ def login():
  """)
         try:
             if login == '1':
-                cnpj = int(input())
+                cnpj = int(input(estilo_azul + "Digite seu CNPJ" + estilo_branco))
                 if validar(cnpj) == True:  # realiza a validação usando a função e permite o login do usuário
                     break
                 else:
